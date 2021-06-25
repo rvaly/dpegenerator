@@ -62,12 +62,15 @@ class DpeGenerator
     public const DPE_TYPE = 'dpe';
     public const GES_TYPE = 'ges';
 
+    private const KG_CO2_M2 = 'kgCO2/m².an';
+    private const KWH_M2 = 'kWh/m².an';
+
     /**
      * DpeGenerator constructor.
      */
     public function __construct()
     {
-        $this->json = json_decode(file_get_contents(__DIR__ . '/dpe.json'));
+        $this->json = json_decode(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'dpe.json'));
     }
 
     /**
@@ -179,16 +182,16 @@ class DpeGenerator
     {
         if ($letterDpe = $this->getNewLetterDPEG()) {
             if ($this->json->dpe->{$letterDpe}) {
-                $image = new Imagick(__DIR__ . '/images/' . $this->json->dpe->{$letterDpe}->img);
+                $image = new Imagick(__DIR__ . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $this->json->dpe->{$letterDpe}->img);
                 $draw = new ImagickDraw();
                 $draw->setFontSize(90);
                 $draw->annotation(90, $this->json->dpe->{$letterDpe}->dpe_val, $this->getDpeVal());
                 $draw->setFontSize(25);
-                $draw->annotation(95, $this->json->dpe->{$letterDpe}->dpe_text, "kWh/m².an");
+                $draw->annotation(95, $this->json->dpe->{$letterDpe}->dpe_text, self::KWH_M2);
                 $draw->setFontSize(90);
                 $draw->annotation(290, $this->json->dpe->{$letterDpe}->ges_val, $this->getGesVal());
                 $draw->setFontSize(25);
-                $draw->annotation(296, $this->json->dpe->{$letterDpe}->ges_text, "kgCO2/m².an");
+                $draw->annotation(296, $this->json->dpe->{$letterDpe}->ges_text, self::KG_CO2_M2);
                 $image->setImageFormat('png');
                 $image->drawImage($draw);
                 if ($this->getGenerateImage() && $this->getPathToWriteImage()) {
@@ -219,12 +222,12 @@ class DpeGenerator
     {
         if ($letterGes = $this->getNewLetterGES()) {
             if ($this->json->ges->{$letterGes}) {
-                $image = new Imagick(__DIR__ . '/images/' . $this->json->ges->{$letterGes}->img);
+                $image = new Imagick(__DIR__ . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $this->json->ges->{$letterGes}->img);
                 $draw = new ImagickDraw();
                 $draw->setFontSize(60);
                 $draw->annotation($this->json->ges->{$letterGes}->ges_val, $this->json->ges->{$letterGes}->x_val, $this->getGesVal());
                 $draw->setFontSize(15);
-                $draw->annotation($this->json->ges->{$letterGes}->ges_text, $this->json->ges->{$letterGes}->x_val, "kgCO2/m².an");
+                $draw->annotation($this->json->ges->{$letterGes}->ges_text, $this->json->ges->{$letterGes}->x_val, self::KG_CO2_M2);
                 $image->drawImage($draw);
                 $image->setImageFormat('png');
                 $image->cropImage(475, 530, 80, 220);
