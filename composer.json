@@ -1,7 +1,7 @@
 {
   "name": "lbigroupp/dpegenerator",
   "description": "This package is use for generate French DPEG picture. This new DPEG is an evolution of ELAN law on 2021-07-01.",
-  "license": "LBI",
+  "license": "MIT",
   "authors": [
     {
       "name": "Romain VALY",
@@ -14,7 +14,7 @@
   },
   "autoload": {
     "psr-4": {
-      "LBIGroupDpeGenerator": "src/"
+      "LBIGroupDpeGenerator\\": "src/"
     }
   }
 }
