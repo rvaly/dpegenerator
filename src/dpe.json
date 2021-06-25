@@ -1,0 +1,97 @@
+{
+  "dpe": {
+    "A": {
+      "img": "base_new_dpe_a.png",
+      "dpe_val": 200,
+      "dpe_text": 250,
+      "ges_val": 200,
+      "ges_text": 250
+    },
+    "B": {
+      "img": "base_new_dpe_b.png",
+      "dpe_val": 300,
+      "dpe_text": 350,
+      "ges_val": 300,
+      "ges_text": 350
+    },
+    "C": {
+      "img": "base_new_dpe_c.png",
+      "dpe_val": 410,
+      "dpe_text": 460,
+      "ges_val": 410,
+      "ges_text": 460
+    },
+    "D": {
+      "img": "base_new_dpe_d.png",
+      "dpe_val": 525,
+      "dpe_text": 575,
+      "ges_val": 525,
+      "ges_text": 575
+    },
+    "E": {
+      "img": "base_new_dpe_e.png",
+      "dpe_val": 640,
+      "dpe_text": 690,
+      "ges_val": 640,
+      "ges_text": 690
+    },
+    "F": {
+      "img": "base_new_dpe_f.png",
+      "dpe_val": 750,
+      "dpe_text": 805,
+      "ges_val": 750,
+      "ges_text": 805
+    },
+    "G": {
+      "img": "base_new_dpe_g.png",
+      "dpe_val": 860,
+      "dpe_text": 915,
+      "ges_val": 860,
+      "ges_text": 915
+    }
+  },
+  "ges": {
+    "A": {
+      "img": "base_new_ges_a.png",
+      "ges_val": 320,
+      "ges_text": 370,
+      "x_val": 360
+    },
+    "B": {
+      "img": "base_new_ges_b.png",
+      "ges_val": 360,
+      "ges_text": 410,
+      "x_val": 420
+    },
+    "C": {
+      "img": "base_new_ges_c.png",
+      "ges_val": 400,
+      "ges_text": 470,
+      "x_val": 470
+    },
+    "D": {
+      "img": "base_new_ges_d.png",
+      "ges_val": 430,
+      "ges_text": 500,
+      "x_val": 520
+    },
+    "E": {
+      "img": "base_new_ges_e.png",
+      "ges_val": 470,
+      "ges_text": 540,
+      "x_val": 570
+    },
+    "F": {
+      "img": "base_new_ges_f.png",
+      "ges_val": 480,
+      "ges_text": 560,
+      "x_val": 620
+    },
+    "G": {
+      "img": "base_new_ges_g.png",
+      "ges_val": 460,
+      "ges_text": 560,
+      "x_val": 670
+    }
+  }
+}

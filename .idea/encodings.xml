@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="ISO-8859-1">
+    <file url="file://$PROJECT_DIR$/src/dpe.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_dpe_a.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_dpe_a.svg" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_dpe_b.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_dpe_c.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_dpe_d.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_dpe_e.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_dpe_f.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_dpe_g.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_ges_a.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_ges_b.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_ges_c.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_ges_d.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_ges_e.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_ges_f.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/images/base_new_ges_g.png" charset="UTF-8" />
+    <file url="PROJECT" charset="ISO-8859-1" />
+  </component>
+</project>
