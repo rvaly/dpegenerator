@@ -3,89 +3,177 @@
 namespace LBIGroupDpeGenerator;
 
 
+use Exception;
 use Imagick;
 use ImagickDraw;
 
+/**
+ * Class DpeGenerator
+ * @package LBIGroupDpeGenerator
+ */
 class DpeGenerator
 {
 
+    /**
+     * JSON structure construct for DPEG generation
+     * @var mixed
+     */
     private $json;
-    private $pictTarget = null;
-    private $pictName = null;
+
+    /**
+     * Picture target (ONLY if you want to generate picture on your system)
+     * @var  null
+     */
+    private $pictTarget;
+
+    /**
+     * Picture Name
+     * @var null
+     */
+    private $pictName;
+
+    /**
+     * Bool value for generating picture, if it's true and pictTarget is implement, your picture is generate in your target folder
+     * @var bool
+     */
     private $generateImage = false;
+
+    /**
+     * type of picture dpe or ges
+     * @var string
+     */
     private $type = 'dpe';
+
+    /**
+     * Value of DPE
+     * @var
+     */
     private $dpeVal;
+
+    /**
+     * value of GES
+     * @var
+     */
     private $gesVal;
 
+    /**
+     * constant to define the type
+     */
+    public const DPE_TYPE = 'dpe';
+    public const GES_TYPE = 'ges';
+
+    /**
+     * DpeGenerator constructor.
+     */
     public function __construct()
     {
         $this->json = json_decode(file_get_contents(__DIR__ . '/dpe.json'));
     }
 
-    public function setGenerateImage($generateImage)
+    /**
+     * @param $generateImage
+     */
+    public function setGenerateImage($generateImage): void
     {
         $this->generateImage = $generateImage;
     }
 
-    private function getGenerateImage()
+    /**
+     * @return bool
+     */
+    private function getGenerateImage(): ?bool
     {
         return $this->generateImage;
     }
 
-    public function setPathToWriteImage($path)
+    /**
+     * set target to write your picture on your system
+     * @param string $path
+     */
+    public function setPathToWriteImage(string $path): void
     {
         $this->pictTarget = $path;
     }
 
-    private function getPathToWriteImage()
+    /**
+     * get target to write your picture on your system
+     * @return null|string
+     */
+    private function getPathToWriteImage(): ?string
     {
         return $this->pictTarget;
     }
 
-    public function setNameOfPicture($pictname)
+    /**
+     * @param string $pictname
+     */
+    public function setNameOfPicture(string $pictname): void
     {
         $this->pictName = $pictname;
     }
 
-    private function getNameOfPicture()
+    /**
+     * @return null
+     */
+    private function getNameOfPicture(): ?string
     {
         return $this->pictName;
     }
 
-    public function setPictureType($type)
+    /**
+     * @param string $type
+     */
+    public function setPictureType(string $type): void
     {
         $this->type = $type;
     }
 
-    private function getPictureType()
+    /**
+     * @return string
+     */
+    private function getPictureType(): string
     {
         return $this->type;
     }
 
-    public function setDpeVal($dpeVal)
+    /**
+     * @param int $dpeVal
+     */
+    public function setDpeVal(int $dpeVal): void
     {
         $this->dpeVal = $dpeVal;
     }
 
-    private function getDpeVal()
+    /**
+     * @return mixed
+     */
+    private function getDpeVal(): int
     {
         return $this->dpeVal;
     }
 
-    public function setGesVal($gesVal)
+    /**
+     * @param int $gesVal
+     */
+    public function setGesVal(int $gesVal): void
     {
         $this->gesVal = $gesVal;
     }
 
-    private function getGesVal()
+    /**
+     * @return mixed
+     */
+    private function getGesVal(): int
     {
         return $this->gesVal;
     }
 
     /**
-     * @return \Imagick|string|null
+     * DPE image generation function
+     * @return \Imagick|string
      * @throws \ImagickDrawException
      * @throws \ImagickException
+     * @throws \Exception
      */
     private function generateImgDpe()
     {
@@ -104,7 +192,7 @@ class DpeGenerator
                 $image->setImageFormat('png');
                 $image->drawImage($draw);
                 if ($this->getGenerateImage() && $this->getPathToWriteImage()) {
-                    $imgTemporary = $this->getPathToWriteImage() . ($this->getNameOfPicture() ? $this->getNameOfPicture() : 'dpeg_' . $this->getDpeVal() . '_' . $this->getGesVal()) . '.png';
+                    $imgTemporary = $this->getPathToWriteImage() . ($this->getNameOfPicture() ?: 'dpeg_' . $this->getDpeVal() . '_' . $this->getGesVal()) . '.png';
                     $image->writeImage($imgTemporary);
 
                     return $imgTemporary;
@@ -113,11 +201,20 @@ class DpeGenerator
                 return $image;
 
             }
-        }
 
-        return null;
+            throw new Exception('Sorry our JSON is gone away', 500);
+        } else {
+            throw new Exception('Your value for DPE is not correct, please fill in a valid integer', 500);
+        }
     }
 
+    /**
+     * GES image generation function
+     * @return \Imagick|string|null
+     * @throws \ImagickDrawException
+     * @throws \ImagickException
+     * @throws \Exception
+     */
     private function generateImgGes()
     {
         if ($letterGes = $this->getNewLetterGES()) {
@@ -132,7 +229,7 @@ class DpeGenerator
                 $image->setImageFormat('png');
                 $image->cropImage(475, 530, 80, 220);
                 if ($this->getGenerateImage() && $this->getPathToWriteImage()) {
-                    $imgTemporary = $this->getPathToWriteImage() . ($this->getNameOfPicture() ? $this->getNameOfPicture() : 'ges_' . $this->getGesVal()) . '.png';
+                    $imgTemporary = $this->getPathToWriteImage() . ($this->getNameOfPicture() ?: 'ges_' . $this->getGesVal()) . '.png';
                     $image->writeImage($imgTemporary);
 
                     return $imgTemporary;
@@ -140,12 +237,18 @@ class DpeGenerator
 
                 return $image;
             }
-        }
 
-        return null;
+            throw new Exception('Sorry our JSON is gone away', 500);
+        } else {
+            throw new Exception('Your value for GES is not correct, please fill in a valid integer', 500);
+        }
     }
 
-    private function getNewLetterDPEG()
+    /**
+     * This function allows you to retrieve the letter of the DPEG according to its value DPE AND GES
+     * @return string|null
+     */
+    private function getNewLetterDPEG(): ?string
     {
         $dpe_cons = $this->getDpeVal();
         $dpe_ges = $this->getGesVal();
@@ -174,7 +277,11 @@ class DpeGenerator
         return null;
     }
 
-    private function getNewLetterGES()
+    /**
+     * This function allows you to retrieve the letter of the GES according to its value of GES only
+     * @return string|null
+     */
+    private function getNewLetterGES(): ?string
     {
         $dpe_ges = $this->getGesVal();
 
@@ -203,13 +310,23 @@ class DpeGenerator
         return null;
     }
 
+    /**
+     * This function allows you to launch the generation of your image according to the parameters entered
+     * @return \Imagick|string|null
+     * @throws \ImagickDrawException
+     * @throws \ImagickException
+     */
     public function generatePicture()
     {
-        if ($this->getPictureType() === 'dpe') {
-            return $this->generateImgDpe();
+        try {
+            if ($this->getPictureType() === 'dpe') {
+                return $this->generateImgDpe();
+            }
+
+            return $this->generateImgGes();
+        } catch (Exception $exception) {
+            throw $exception;
         }
-
-        return $this->generateImgGes();
-
     }
+
 }
