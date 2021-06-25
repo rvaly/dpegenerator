@@ -3,6 +3,9 @@
 namespace LBIGroupDpeGenerator;
 
 
+use Imagick;
+use ImagickDraw;
+
 class DpeGenerator
 {
 
@@ -16,7 +19,7 @@ class DpeGenerator
 
     public function __construct()
     {
-        $this->json = json_decode(file_get_contents('dpe.json'));
+        $this->json = json_decode(file_get_contents(__DIR__ . '/dpe.json'));
     }
 
     public function setGenerateImage($generateImage)
@@ -79,24 +82,25 @@ class DpeGenerator
         return $this->gesVal;
     }
 
+    /**
+     * @return \Imagick|string|null
+     * @throws \ImagickDrawException
+     * @throws \ImagickException
+     */
     private function generateImgDpe()
     {
         if ($letterDpe = $this->getNewLetterDPEG()) {
             if ($this->json->dpe->{$letterDpe}) {
-                /* Création de quelques objets */
-                $image = new \Imagick('../images/' . $this->json->dpe->{$letterDpe}->img);
-                $draw = new \ImagickDraw();
-                /* Propriétées du texte */
+                $image = new Imagick(__DIR__ . '/images/' . $this->json->dpe->{$letterDpe}->img);
+                $draw = new ImagickDraw();
                 $draw->setFontSize(90);
                 $draw->annotation(90, $this->json->dpe->{$letterDpe}->dpe_val, $this->getDpeVal());
                 $draw->setFontSize(25);
-                $draw->annotation(95, $this->json->dpe->{$letterDpe}->dpe_text, "kWh/m².an");
+                $draw->annotation(95, $this->json->dpe->{$letterDpe}->dpe_text, "kWh/mÂ².an");
                 $draw->setFontSize(90);
                 $draw->annotation(290, $this->json->dpe->{$letterDpe}->ges_val, $this->getGesVal());
                 $draw->setFontSize(25);
-                $draw->annotation(296, $this->json->dpe->{$letterDpe}->ges_text, "kgCO2/m².an");
-
-                /* Format de l'image */
+                $draw->annotation(296, $this->json->dpe->{$letterDpe}->ges_text, "kgCO2/mÂ².an");
                 $image->setImageFormat('png');
                 $image->drawImage($draw);
                 if ($this->getGenerateImage() && $this->getPathToWriteImage()) {
@@ -116,18 +120,14 @@ class DpeGenerator
 
     private function generateImgGes()
     {
-        if ($letterGes = $this->getNewLetterGES($this->getGesVal())) {
+        if ($letterGes = $this->getNewLetterGES()) {
             if ($this->json->ges->{$letterGes}) {
-                /* Création de quelques objets */
-                $image = new \Imagick('../images/' . $this->json->ges->{$letterGes}->img);
-                $draw = new \ImagickDraw();
-                /* Propriétées du texte */
+                $image = new Imagick(__DIR__ . '/images/' . $this->json->ges->{$letterGes}->img);
+                $draw = new ImagickDraw();
                 $draw->setFontSize(60);
                 $draw->annotation($this->json->ges->{$letterGes}->ges_val, $this->json->ges->{$letterGes}->x_val, $this->getGesVal());
                 $draw->setFontSize(15);
-                $draw->annotation($this->json->ges->{$letterGes}->ges_text, $this->json->ges->{$letterGes}->x_val, "kgCO2/m².an");
-
-                /* Format de l'image */
+                $draw->annotation($this->json->ges->{$letterGes}->ges_text, $this->json->ges->{$letterGes}->x_val, "kgCO2/mï¿½.an");
                 $image->drawImage($draw);
                 $image->setImageFormat('png');
                 $image->cropImage(475, 530, 80, 220);
