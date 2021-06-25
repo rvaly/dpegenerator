@@ -127,7 +127,7 @@ class DpeGenerator
                 $draw->setFontSize(60);
                 $draw->annotation($this->json->ges->{$letterGes}->ges_val, $this->json->ges->{$letterGes}->x_val, $this->getGesVal());
                 $draw->setFontSize(15);
-                $draw->annotation($this->json->ges->{$letterGes}->ges_text, $this->json->ges->{$letterGes}->x_val, "kgCO2/m�.an");
+                $draw->annotation($this->json->ges->{$letterGes}->ges_text, $this->json->ges->{$letterGes}->x_val, "kgCO2/m².an");
                 $image->drawImage($draw);
                 $image->setImageFormat('png');
                 $image->cropImage(475, 530, 80, 220);
