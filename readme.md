@@ -89,4 +89,4 @@ echo $dpe->generatePicture();
 
 ``1.2.1`` : stable version for all PHP versions (5, 7 and 8) ;
 
-``1.3`` : stable version ONLY for PHP >= 7.1 ;
+``2.0.1`` : stable version ONLY for PHP >= 7.1 ;
