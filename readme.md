@@ -2,6 +2,8 @@
 
 DPE Generator is a library that allows you to quickly generate an image of the new DPE and GES.
 
+Available on https://packagist.org/packages/lbigroupp/dpegenerator
+
 ### list of available functions (and their type)
 
 ```php 
