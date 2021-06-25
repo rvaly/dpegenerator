@@ -16,7 +16,9 @@ class DpeGenerator
 
     public function __construct()
     {
-        $this->json = json_decode(file_get_contents('dpe.json'));
+        $this->json = json_decode(
+            file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'dpe.json')
+        );
     }
 
     public function setGenerateImage($generateImage)
@@ -84,7 +86,7 @@ class DpeGenerator
         if ($letterDpe = $this->getNewLetterDPEG()) {
             if ($this->json->dpe->{$letterDpe}) {
                 /* Création de quelques objets */
-                $image = new \Imagick('../images/' . $this->json->dpe->{$letterDpe}->img);
+                $image = new \Imagick(__DIR__ . '/images/' . $this->json->dpe->{$letterDpe}->img);
                 $draw = new \ImagickDraw();
                 /* Propriétées du texte */
                 $draw->setFontSize(90);
