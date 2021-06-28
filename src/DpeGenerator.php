@@ -19,6 +19,7 @@ class DpeGenerator
      * @var mixed
      */
     private $json;
+    private $default_json = __DIR__ . DIRECTORY_SEPARATOR . 'json' . DIRECTORY_SEPARATOR . 'dpe.json';
 
     /**
      * Picture target (ONLY if you want to generate picture on your system)
@@ -57,6 +58,13 @@ class DpeGenerator
     private $gesVal;
 
     /**
+     * value of iso CODE
+     * @var
+     */
+    private $isoCode;
+
+
+    /**
      * constant to define the type
      */
     public const DPE_TYPE = 'dpe';
@@ -68,10 +76,17 @@ class DpeGenerator
     /**
      * DpeGenerator constructor.
      */
-    public function __construct()
+    public function __construct($isCode = 'FR')
     {
-        $this->json = json_decode(file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'dpe.json'));
+        $this->isoCode = $isCode;
+        $fileName = __DIR__ . DIRECTORY_SEPARATOR . 'json' . DIRECTORY_SEPARATOR . $this->isoCode . DIRECTORY_SEPARATOR . 'dpe.json';
+        if (!file_exists($fileName)) {
+            $fileName = $this->default_json;
+            $this->isoCode = 'FR';
+        }
+        $this->json = json_decode(file_get_contents($fileName));
     }
+#region GETTER/SETTER
 
     /**
      * @param $generateImage
@@ -170,6 +185,37 @@ class DpeGenerator
     {
         return $this->gesVal;
     }
+#endregion
+
+    /**
+     * This function allows you to launch the generation of your image according to the parameters entered
+     * @return \Imagick|string|null
+     * @throws \ImagickDrawException
+     * @throws \ImagickException
+     */
+    public function generatePicture()
+    {
+        try {
+            if ($this->isoCode === 'FR') {
+                if ($this->getPictureType() === 'dpe') {
+
+                    return $this->generateImgDpe();
+                }
+
+                return $this->generateImgGes();
+            }
+            if ($this->isoCode === 'GP') {
+                return $this->generateImgDPEG();
+            }
+
+            return null;
+        } catch (Exception $exception) {
+            throw $exception;
+        }
+    }
+
+
+    #region FRENCH DPE
 
     /**
      * DPE image generation function
@@ -182,14 +228,14 @@ class DpeGenerator
     {
         if ($letterDpe = $this->getNewLetterDPEG()) {
             if ($this->json->dpe->{$letterDpe}) {
-                $image = new Imagick(__DIR__ . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $this->json->dpe->{$letterDpe}->img);
+                $image = new Imagick(__DIR__ . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $this->isoCode . DIRECTORY_SEPARATOR . $this->json->dpe->{$letterDpe}->img);
                 $draw = new ImagickDraw();
                 $draw->setFontSize(90);
-                $draw->annotation(90, $this->json->dpe->{$letterDpe}->dpe_val, $this->getDpeVal());
+                $draw->annotation(90 + (20 * (3 - strlen($this->getDpeVal()))), $this->json->dpe->{$letterDpe}->dpe_val, $this->getDpeVal());
                 $draw->setFontSize(25);
                 $draw->annotation(95, $this->json->dpe->{$letterDpe}->dpe_text, self::KWH_M2);
                 $draw->setFontSize(90);
-                $draw->annotation(290, $this->json->dpe->{$letterDpe}->ges_val, $this->getGesVal());
+                $draw->annotation(296 + (20 * (3 - strlen($this->getGesVal()))), $this->json->dpe->{$letterDpe}->ges_val, $this->getGesVal());
                 $draw->setFontSize(25);
                 $draw->annotation(296, $this->json->dpe->{$letterDpe}->ges_text, self::KG_CO2_M2);
                 $image->setImageFormat('png');
@@ -204,7 +250,6 @@ class DpeGenerator
                 return $image;
 
             }
-
             throw new Exception('Sorry our JSON is gone away', 500);
         } else {
             throw new Exception('Your value for DPE is not correct, please fill in a valid integer', 500);
@@ -222,7 +267,7 @@ class DpeGenerator
     {
         if ($letterGes = $this->getNewLetterGES()) {
             if ($this->json->ges->{$letterGes}) {
-                $image = new Imagick(__DIR__ . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $this->json->ges->{$letterGes}->img);
+                $image = new Imagick(__DIR__ . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $this->isoCode . DIRECTORY_SEPARATOR . $this->json->ges->{$letterGes}->img);
                 $draw = new ImagickDraw();
                 $draw->setFontSize(60);
                 $draw->annotation($this->json->ges->{$letterGes}->ges_val, $this->json->ges->{$letterGes}->x_val, $this->getGesVal());
@@ -240,7 +285,6 @@ class DpeGenerator
 
                 return $image;
             }
-
             throw new Exception('Sorry our JSON is gone away', 500);
         } else {
             throw new Exception('Your value for GES is not correct, please fill in a valid integer', 500);
@@ -255,6 +299,7 @@ class DpeGenerator
     {
         $dpe_cons = $this->getDpeVal();
         $dpe_ges = $this->getGesVal();
+
         if ($dpe_cons > 420 || $dpe_ges > 100) {
             return 'G';
         }
@@ -313,23 +358,81 @@ class DpeGenerator
         return null;
     }
 
+    #endregion
+    #region GUADELOUPE DPE
     /**
-     * This function allows you to launch the generation of your image according to the parameters entered
-     * @return \Imagick|string|null
+     * DPEG image generation function
+     * @return \Imagick|string
      * @throws \ImagickDrawException
      * @throws \ImagickException
      */
-    public function generatePicture()
+    private function generateImgDPEG()
     {
-        try {
-            if ($this->getPictureType() === 'dpe') {
-                return $this->generateImgDpe();
-            }
+        if ($letterDPEG = $this->getLetterDPEGGP()) {
+            if ($this->json->dpe->{$letterDPEG}) {
+                $image = new Imagick(__DIR__ . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $this->isoCode . DIRECTORY_SEPARATOR . "base_cons_dpeg.png");
+                $draw = new ImagickDraw();
+                $draw->setFontSize(40);
+                $nombreTirets = $this->json->dpe->{$letterDPEG}->nombreTirets;
+                $draw->setFillColor('white');
+                $draw->annotation($this->json->dpe->{$letterDPEG}->value_x, $this->json->dpe->{$letterDPEG}->value_y, $this->getDpeVal());
+                for ($i = 0; $i < $nombreTirets; ++$i) {
+                    $tirets .= '-';
+                }
+                $draw->setFillColor('black');
+                $draw->setFontSize(25);
+                $draw->annotation($this->json->dpe->{$letterDPEG}->tiret_x, $this->json->dpe->{$letterDPEG}->tiret_y, $tirets);
+                $imageEtiquette = new Imagick(__DIR__ . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . "etiquette_cons_void.png");
+                $image->compositeImage($imageEtiquette, Imagick::COMPOSITE_OVER, $this->json->dpe->{$letterDPEG}->img_x, $this->json->dpe->{$letterDPEG}->img_y);
+                $image->setImageFormat('png');
+                $image->drawImage($draw);
+                if ($this->getGenerateImage() && $this->getPathToWriteImage()) {
+                    $imgTemporary = $this->getPathToWriteImage() . ($this->getNameOfPicture() ?: 'dpeg_' . $this->getDpeVal() . '_' . $this->getGesVal()) . '.png';
+                    $image->writeImage($imgTemporary);
 
-            return $this->generateImgGes();
-        } catch (Exception $exception) {
-            throw $exception;
+                    return $imgTemporary;
+                }
+
+                return $image;
+            }
+            throw new Exception('Sorry our JSON is gone away', 500);
+        } else {
+            throw new Exception('Your value for GES is not correct, please fill in a valid integer', 500);
         }
     }
+
+    /**
+     * This function allows you to retrieve the letter of the DPEG according to its value DPE AND iso code GP
+     * @return string|null
+     */
+    private function getLetterDPEGGP(): ?string
+    {
+        $dpe_cons = $this->getDpeVal();
+
+        if ($dpe_cons > 90) {
+            return 'G';
+        }
+        if ($dpe_cons <= 15) {
+            return 'A';
+        }
+        if ($dpe_cons <= 25) {
+            return 'B';
+        }
+        if ($dpe_cons <= 30) {
+            return 'C';
+        }
+        if ($dpe_cons <= 45) {
+            return 'D';
+        }
+        if ($dpe_cons <= 60) {
+            return 'E';
+        }
+        if ($dpe_cons <= 90) {
+            return 'F';
+        }
+
+        return null;
+    }
+    #endregion
 
 }
