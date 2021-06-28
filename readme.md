@@ -3,6 +3,8 @@
 DPE Generator is a library that allows you to quickly generate an image of the new DPE and GES. If you generate DPEG
 picture for Guadaloupe (GP), you must add GP value in construct.
 
+Available on https://packagist.org/packages/lbigroupp/dpegenerator
+
 ### list of available functions (and their type)
 
 ```php 
@@ -93,4 +95,3 @@ echo $dpe->generatePicture();
 ``2.0.1`` : stable version ONLY for PHP >= 7.1 ;
 
 ``2.1`` : addition DPEG for Guadeloupe via iso code GP;
-
