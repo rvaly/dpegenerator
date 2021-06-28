@@ -1,0 +1,67 @@
+{
+  "dpe": {
+    "A": {
+      "nombreTirets": 53,
+      "value_x": 620,
+      "value_y": 100,
+      "tiret_x": 155,
+      "tiret_y": 95,
+      "img_x": 575,
+      "img_y": 12
+    },
+    "B": {
+      "nombreTirets": 45,
+      "value_x": 620,
+      "value_y": 185,
+      "tiret_x": 220,
+      "tiret_y": 179,
+      "img_x": 575,
+      "img_y": 96
+    },
+    "C": {
+      "nombreTirets": 37,
+      "value_x": 620,
+      "value_y": 270,
+      "tiret_x": 283,
+      "tiret_y": 263,
+      "img_x": 575,
+      "img_y": 180
+    },
+    "D": {
+      "nombreTirets": 31,
+      "value_x": 620,
+      "value_y": 355,
+      "tiret_x": 345,
+      "tiret_y": 347,
+      "img_x": 575,
+      "img_y": 264
+    },
+    "E": {
+      "nombreTirets": 23,
+      "value_x": 620,
+      "value_y": 440,
+      "tiret_x": 407,
+      "tiret_y": 431,
+      "img_x": 575,
+      "img_y": 348
+    },
+    "F": {
+      "nombreTirets": 15,
+      "value_x": 620,
+      "value_y": 525,
+      "tiret_x": 469,
+      "tiret_y": 515,
+      "img_x": 575,
+      "img_y": 432
+    },
+    "G": {
+      "nombreTirets": 7,
+      "value_x": 620,
+      "value_y": 610,
+      "tiret_x": 531,
+      "tiret_y": 599,
+      "img_x": 575,
+      "img_y": 516
+    }
+  }
+}
