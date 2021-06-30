@@ -94,3 +94,5 @@ echo $dpe->generatePicture();
 
 ``2.1`` : addition DPEG for Guadeloupe via iso code GP;
 
+``2.1.1`` : Fix bug;
+
