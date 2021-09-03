@@ -2,96 +2,165 @@
   "dpe": {
     "A": {
       "img": "base_new_dpe_a.png",
-      "dpe_val": 200,
-      "dpe_text": 250,
-      "ges_val": 200,
-      "ges_text": 250
+      "val": 200,
+      "text": 250
     },
     "B": {
       "img": "base_new_dpe_b.png",
-      "dpe_val": 300,
-      "dpe_text": 350,
-      "ges_val": 300,
-      "ges_text": 350
+      "val": 300,
+      "text": 350
     },
     "C": {
       "img": "base_new_dpe_c.png",
-      "dpe_val": 410,
-      "dpe_text": 460,
-      "ges_val": 410,
-      "ges_text": 460
+      "val": 410,
+      "text": 460
     },
     "D": {
       "img": "base_new_dpe_d.png",
-      "dpe_val": 525,
-      "dpe_text": 575,
-      "ges_val": 525,
-      "ges_text": 575
+      "val": 525,
+      "text": 575
     },
     "E": {
       "img": "base_new_dpe_e.png",
-      "dpe_val": 640,
-      "dpe_text": 690,
-      "ges_val": 640,
-      "ges_text": 690
+      "val": 640,
+      "text": 690
     },
     "F": {
       "img": "base_new_dpe_f.png",
-      "dpe_val": 750,
-      "dpe_text": 805,
-      "ges_val": 750,
-      "ges_text": 805
+      "val": 750,
+      "text": 805
     },
     "G": {
       "img": "base_new_dpe_g.png",
-      "dpe_val": 860,
-      "dpe_text": 915,
-      "ges_val": 860,
-      "ges_text": 915
+      "val": 860,
+      "text": 915
     }
   },
   "ges": {
     "A": {
       "img": "base_new_ges_a.png",
       "ges_val": 320,
-      "ges_text": 370,
+      "ges_text": 390,
       "x_val": 360
     },
     "B": {
       "img": "base_new_ges_b.png",
       "ges_val": 360,
-      "ges_text": 410,
+      "ges_text": 430,
       "x_val": 420
     },
     "C": {
       "img": "base_new_ges_c.png",
       "ges_val": 400,
-      "ges_text": 470,
+      "ges_text": 490,
       "x_val": 470
     },
     "D": {
       "img": "base_new_ges_d.png",
       "ges_val": 430,
-      "ges_text": 500,
+      "ges_text": 520,
       "x_val": 520
     },
     "E": {
       "img": "base_new_ges_e.png",
       "ges_val": 470,
-      "ges_text": 540,
+      "ges_text": 560,
       "x_val": 570
     },
     "F": {
       "img": "base_new_ges_f.png",
       "ges_val": 480,
-      "ges_text": 560,
+      "ges_text": 580,
       "x_val": 620
     },
     "G": {
       "img": "base_new_ges_g.png",
       "ges_val": 460,
-      "ges_text": 560,
+      "ges_text": 580,
       "x_val": 670
+    }
+  },
+  "web": {
+    "dpe": {
+      "A": {
+        "img": "base_dpe_web_a.png",
+        "val": 60,
+        "text": 80
+      },
+      "B": {
+        "img": "base_dpe_web_b.png",
+        "val": 110,
+        "text": 130
+      },
+      "C": {
+        "img": "base_dpe_web_c.png",
+        "val": 160,
+        "text": 180
+      },
+      "D": {
+        "img": "base_dpe_web_d.png",
+        "val": 210,
+        "text": 230
+      },
+      "E": {
+        "img": "base_dpe_web_e.png",
+        "val": 260,
+        "text": 280
+      },
+      "F": {
+        "img": "base_dpe_web_f.png",
+        "val": 310,
+        "text": 330
+      },
+      "G": {
+        "img": "base_dpe_web_g.png",
+        "val": 360,
+        "text": 380
+      }
+    },
+    "ges": {
+      "A": {
+        "img": "base_ges_web_a.png",
+        "ges_val": 220,
+        "ges_text": 260,
+        "x_val": 70
+      },
+      "B": {
+        "img": "base_ges_web_b.png",
+        "ges_val": 250,
+        "ges_text": 320,
+        "x_val": 120
+      },
+      "C": {
+        "img": "base_ges_web_c.png",
+        "ges_val": 290,
+        "ges_text": 360,
+        "x_val": 170
+      },
+      "D": {
+        "img": "base_ges_web_d.png",
+        "ges_val": 330,
+        "ges_text": 400,
+        "x_val": 220
+      },
+      "E": {
+        "img": "base_ges_web_e.png",
+        "ges_val": 370,
+        "ges_text": 440,
+        "x_val": 270
+      },
+      "F": {
+        "img": "base_ges_web_f.png",
+        "ges_val": 370,
+        "ges_text": 440,
+        "x_val": 320
+      },
+      "G": {
+        "img": "base_ges_web_g.png",
+        "ges_val": 370,
+        "ges_text": 475,
+        "x_val": 370
+      }
     }
   }
 }
