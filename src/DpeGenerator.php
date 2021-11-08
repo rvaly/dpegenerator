@@ -63,6 +63,13 @@ class DpeGenerator
      */
     private $isoCode;
 
+    /**
+     * value of isDpeAltitude
+     * @var bool
+     */
+    private $isDpeAltitude = false;
+
+
     private $size = self::PRINT_SIZE_TYPE;
 
     /**
@@ -205,6 +212,24 @@ class DpeGenerator
     {
         return $this->gesVal;
     }
+
+    /**
+     * @param bool $isDpeAltitude
+     */
+    public function setIsDpeAltitude(bool $isDpeAltitude): void
+    {
+        $this->isDpeAltitude = $isDpeAltitude;
+    }
+
+    /**
+     * @return bool
+     */
+    private function getIsDpeAltitude(): ?bool
+    {
+        return $this->isDpeAltitude;
+    }
+
+
 #endregion
 
     /**
@@ -376,15 +401,12 @@ class DpeGenerator
      * This function allows you to retrieve the letter of the DPEG according to its value DPE AND GES
      * @return string|null
      */
-    private function getNewLetterDPEG(): ?string
+    public function getNewLetterDPEG(): ?string
     {
         $dpe_cons = $this->getDpeVal();
         $dpe_ges = $this->getGesVal();
-
-        if ($dpe_cons > 420 || $dpe_ges > 100) {
-            return 'G';
-        }
-        if ($dpe_cons <= 70 && $dpe_ges <= 6) {
+        $isDpeAltitude = $this->getIsDpeAltitude();
+        if ($dpe_cons < 70 && $dpe_ges < 6) {
             return 'A';
         }
         if ($dpe_cons <= 110 && $dpe_ges <= 11) {
@@ -396,28 +418,40 @@ class DpeGenerator
         if ($dpe_cons <= 250 && $dpe_ges <= 50) {
             return 'D';
         }
+        if ($isDpeAltitude) {
+            if ($dpe_cons <= 390 && $dpe_ges <= 80) {
+                return 'E';
+            }
+            if ($dpe_cons <= 500 && $dpe_ges <= 110) {
+                return 'F';
+            }
+            if ($dpe_cons > 500 || $dpe_ges > 110) {
+                return 'G';
+            }
+        }
         if ($dpe_cons <= 330 && $dpe_ges <= 70) {
             return 'E';
         }
         if ($dpe_cons <= 420 && $dpe_ges <= 100) {
             return 'F';
         }
+        if ($dpe_cons > 420 || $dpe_ges > 100) {
+            return 'G';
+        }
 
         return null;
     }
+
 
     /**
      * This function allows you to retrieve the letter of the GES according to its value of GES only
      * @return string|null
      */
-    private function getNewLetterGES(): ?string
+    public function getNewLetterGES(): ?string
     {
         $dpe_ges = $this->getGesVal();
-
-        if ($dpe_ges > 100) {
-            return 'G';
-        }
-        if ($dpe_ges <= 6) {
+        $isDpeAltitude = $this->getIsDpeAltitude();
+        if ($dpe_ges < 6) {
             return 'A';
         }
         if ($dpe_ges <= 11) {
@@ -429,6 +463,16 @@ class DpeGenerator
         if ($dpe_ges <= 50) {
             return 'D';
         }
+        if ($isDpeAltitude) {
+            if ($dpe_ges <= 80) {
+                return 'E';
+            }
+            if ($dpe_ges <= 110) {
+                return 'F';
+            }
+
+            return 'G'; // > 110
+        }
         if ($dpe_ges <= 70) {
             return 'E';
         }
@@ -436,10 +480,10 @@ class DpeGenerator
             return 'F';
         }
 
-        return null;
+        return 'G'; // > 100
     }
-
     #endregion
+
     #region GUADELOUPE DPE
     /**
      * DPEG image generation function
