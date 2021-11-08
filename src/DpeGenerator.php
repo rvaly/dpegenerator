@@ -75,14 +75,14 @@ class DpeGenerator
     /**
      * constant to define the type
      */
-    public const DPE_TYPE = 'dpe';
-    public const GES_TYPE = 'ges';
+    const DPE_TYPE = 'dpe';
+    const GES_TYPE = 'ges';
 
-    public const PRINT_SIZE_TYPE = 'print';
-    public const WEB_SIZE_TYPE = 'web';
+    const PRINT_SIZE_TYPE = 'print';
+    const WEB_SIZE_TYPE = 'web';
 
-    private const KG_CO2_M2 = 'kgCO2/m².an';
-    private const KWH_M2 = 'kWh/m².an';
+    const KG_CO2_M2 = 'kgCO2/m².an';
+    const KWH_M2 = 'kWh/m².an';
 
     /**
      * DpeGenerator constructor.
@@ -102,7 +102,7 @@ class DpeGenerator
     /**
      * @param $generateImage
      */
-    public function setImageSize($size): void
+    public function setImageSize($size)
     {
         $this->size = $size;
     }
@@ -110,7 +110,7 @@ class DpeGenerator
     /**
      * @return bool
      */
-    private function getImageSize(): ?string
+    private function getImageSize()
     {
         return $this->size;
     }
@@ -118,7 +118,7 @@ class DpeGenerator
     /**
      * @param $generateImage
      */
-    public function setGenerateImage($generateImage): void
+    public function setGenerateImage($generateImage)
     {
         $this->generateImage = $generateImage;
     }
@@ -126,7 +126,7 @@ class DpeGenerator
     /**
      * @return bool
      */
-    private function getGenerateImage(): ?bool
+    private function getGenerateImage()
     {
         return $this->generateImage;
     }
@@ -135,7 +135,7 @@ class DpeGenerator
      * set target to write your picture on your system
      * @param string $path
      */
-    public function setPathToWriteImage(string $path): void
+    public function setPathToWriteImage($path)
     {
         $this->pictTarget = $path;
     }
@@ -144,7 +144,7 @@ class DpeGenerator
      * get target to write your picture on your system
      * @return null|string
      */
-    private function getPathToWriteImage(): ?string
+    private function getPathToWriteImage()
     {
         return $this->pictTarget;
     }
@@ -152,7 +152,7 @@ class DpeGenerator
     /**
      * @param string $pictname
      */
-    public function setNameOfPicture(string $pictname): void
+    public function setNameOfPicture($pictname)
     {
         $this->pictName = $pictname;
     }
@@ -160,7 +160,7 @@ class DpeGenerator
     /**
      * @return null
      */
-    private function getNameOfPicture(): ?string
+    private function getNameOfPicture()
     {
         return $this->pictName;
     }
@@ -168,7 +168,7 @@ class DpeGenerator
     /**
      * @param string $type
      */
-    public function setPictureType(string $type): void
+    public function setPictureType($type)
     {
         $this->type = $type;
     }
@@ -176,7 +176,7 @@ class DpeGenerator
     /**
      * @return string
      */
-    private function getPictureType(): string
+    private function getPictureType()
     {
         return $this->type;
     }
@@ -184,7 +184,7 @@ class DpeGenerator
     /**
      * @param int $dpeVal
      */
-    public function setDpeVal(int $dpeVal): void
+    public function setDpeVal($dpeVal)
     {
         $this->dpeVal = $dpeVal;
     }
@@ -192,7 +192,7 @@ class DpeGenerator
     /**
      * @return mixed
      */
-    private function getDpeVal(): int
+    private function getDpeVal()
     {
         return $this->dpeVal;
     }
@@ -200,7 +200,7 @@ class DpeGenerator
     /**
      * @param int $gesVal
      */
-    public function setGesVal(int $gesVal): void
+    public function setGesVal($gesVal)
     {
         $this->gesVal = $gesVal;
     }
@@ -208,7 +208,7 @@ class DpeGenerator
     /**
      * @return mixed
      */
-    private function getGesVal(): int
+    private function getGesVal()
     {
         return $this->gesVal;
     }
@@ -216,7 +216,7 @@ class DpeGenerator
     /**
      * @param bool $isDpeAltitude
      */
-    public function setIsDpeAltitude(bool $isDpeAltitude): void
+    public function setIsDpeAltitude($isDpeAltitude)
     {
         $this->isDpeAltitude = $isDpeAltitude;
     }
@@ -224,7 +224,7 @@ class DpeGenerator
     /**
      * @return bool
      */
-    private function getIsDpeAltitude(): ?bool
+    private function getIsDpeAltitude()
     {
         return $this->isDpeAltitude;
     }
@@ -401,7 +401,7 @@ class DpeGenerator
      * This function allows you to retrieve the letter of the DPEG according to its value DPE AND GES
      * @return string|null
      */
-    public function getNewLetterDPEG(): ?string
+    public function getNewLetterDPEG()
     {
         $dpe_cons = $this->getDpeVal();
         $dpe_ges = $this->getGesVal();
@@ -447,7 +447,7 @@ class DpeGenerator
      * This function allows you to retrieve the letter of the GES according to its value of GES only
      * @return string|null
      */
-    public function getNewLetterGES(): ?string
+    public function getNewLetterGES()
     {
         $dpe_ges = $this->getGesVal();
         $isDpeAltitude = $this->getIsDpeAltitude();
@@ -541,7 +541,7 @@ class DpeGenerator
      * This function allows you to retrieve the letter of the DPEG according to its value DPE AND iso code GP
      * @return string|null
      */
-    private function getLetterDPEGGP(): ?string
+    private function getLetterDPEGGP()
     {
         $dpe_cons = $this->getDpeVal();
 
