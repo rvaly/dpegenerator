@@ -332,7 +332,10 @@ class DpeGenerator
 
                 if ($this->getGenerateImage() && $this->getPathToWriteImage()) {
                     $imgTemporary = $this->getPathToWriteImage() . ($this->getNameOfPicture() ?: 'dpeg_' . $this->getDpeVal() . '_' . $this->getGesVal()) . '.png';
+                    $imgTemporaryJpg = $this->getPathToWriteImage() . ($this->getNameOfPicture() ?: 'dpeg_' . $this->getDpeVal() . '_' . $this->getGesVal()) . '.jpg';
                     $image->writeImage($imgTemporary);
+                    $image->setImageFormat('jpg');
+                    $image->writeImage($imgTemporaryJpg);
 
                     return $imgTemporary;
                 }
@@ -384,7 +387,10 @@ class DpeGenerator
                 $image->setImageAlphaChannel(Imagick::ALPHACHANNEL_REMOVE);
                 if ($this->getGenerateImage() && $this->getPathToWriteImage()) {
                     $imgTemporary = $this->getPathToWriteImage() . ($this->getNameOfPicture() ?: 'ges_' . $this->getGesVal()) . '.png';
+                    $imgTemporaryJpg = $this->getPathToWriteImage() . ($this->getNameOfPicture() ?: 'ges_' . $this->getGesVal()) . '.jpg';
                     $image->writeImage($imgTemporary);
+                    $image->setImageFormat('jpg');
+                    $image->writeImage($imgTemporaryJpg);
 
                     return $imgTemporary;
                 }
@@ -406,6 +412,7 @@ class DpeGenerator
         $dpe_cons = $this->getDpeVal();
         $dpe_ges = $this->getGesVal();
         $isDpeAltitude = $this->getIsDpeAltitude();
+
         if ($dpe_cons < 70 && $dpe_ges < 6) {
             return 'A';
         }
