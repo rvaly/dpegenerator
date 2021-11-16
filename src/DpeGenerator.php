@@ -12,6 +12,7 @@ use ImagickDraw;
  * @package LBIGroupDpeGenerator
  */
 class DpeGenerator
+
 {
 
     /**
@@ -97,7 +98,8 @@ class DpeGenerator
         }
         $this->json = json_decode(file_get_contents($fileName));
     }
-#region GETTER/SETTER
+
+    #region GETTER/SETTER
 
     /**
      * @param $generateImage
@@ -229,8 +231,7 @@ class DpeGenerator
         return $this->isDpeAltitude;
     }
 
-
-#endregion
+    #endregion
 
     /**
      * This function allows you to launch the generation of your image according to the parameters entered
@@ -258,7 +259,6 @@ class DpeGenerator
             throw $exception;
         }
     }
-
 
     #region FRENCH DPE
 
@@ -416,39 +416,78 @@ class DpeGenerator
         if ($dpe_cons < 70 && $dpe_ges < 6) {
             return 'A';
         }
-        if ($dpe_cons <= 110 && $dpe_ges <= 11) {
+        if ($dpe_cons < 110 && $dpe_ges < 11) {
             return 'B';
         }
-        if ($dpe_cons <= 180 && $dpe_ges <= 30) {
+        if ($dpe_cons < 180 && $dpe_ges < 30) {
             return 'C';
         }
-        if ($dpe_cons <= 250 && $dpe_ges <= 50) {
+        if ($dpe_cons < 250 && $dpe_ges < 50) {
             return 'D';
         }
         if ($isDpeAltitude) {
-            if ($dpe_cons <= 390 && $dpe_ges <= 80) {
+            if ($dpe_cons < 390 && $dpe_ges < 80) {
                 return 'E';
             }
-            if ($dpe_cons <= 500 && $dpe_ges <= 110) {
+            if ($dpe_cons < 500 && $dpe_ges < 110) {
                 return 'F';
             }
-            if ($dpe_cons > 500 || $dpe_ges > 110) {
+            if ($dpe_cons >= 500 || $dpe_ges >= 110) {
                 return 'G';
             }
         }
-        if ($dpe_cons <= 330 && $dpe_ges <= 70) {
+        if ($dpe_cons < 330 && $dpe_ges < 70) {
             return 'E';
         }
-        if ($dpe_cons <= 420 && $dpe_ges <= 100) {
+        if ($dpe_cons < 420 && $dpe_ges < 100) {
             return 'F';
         }
-        if ($dpe_cons > 420 || $dpe_ges > 100) {
+        if ($dpe_cons >= 420 || $dpe_ges >= 100) {
             return 'G';
         }
 
         return null;
     }
 
+    /**
+     * This function allows you to retrieve the letter of the DPEG according to its value DPE
+     * @return string|null
+     */
+    public function getNewLetterDPE(): ?string
+    {
+        $dpe_cons = $this->getDpeVal();
+        $isDpeAltitude = $this->getIsDpeAltitude();
+        if ($dpe_cons < 70) {
+            return 'A';
+        }
+        if ($dpe_cons < 110) {
+            return 'B';
+        }
+        if ($dpe_cons < 180) {
+            return 'C';
+        }
+        if ($dpe_cons < 250) {
+            return 'D';
+        }
+        if ($isDpeAltitude) {
+            if ($dpe_cons < 390) {
+                return 'E';
+            }
+            if ($dpe_cons < 500) {
+                return 'F';
+            }
+
+            return 'G'; // >= 500
+        }
+        if ($dpe_cons < 330) {
+            return 'E';
+        }
+        if ($dpe_cons < 420) {
+            return 'F';
+        }
+
+        return 'G'; // >= 420
+    }
 
     /**
      * This function allows you to retrieve the letter of the GES according to its value of GES only
@@ -461,34 +500,35 @@ class DpeGenerator
         if ($dpe_ges < 6) {
             return 'A';
         }
-        if ($dpe_ges <= 11) {
+        if ($dpe_ges < 11) {
             return 'B';
         }
-        if ($dpe_ges <= 30) {
+        if ($dpe_ges < 30) {
             return 'C';
         }
-        if ($dpe_ges <= 50) {
+        if ($dpe_ges < 50) {
             return 'D';
         }
         if ($isDpeAltitude) {
-            if ($dpe_ges <= 80) {
+            if ($dpe_ges < 80) {
                 return 'E';
             }
-            if ($dpe_ges <= 110) {
+            if ($dpe_ges < 110) {
                 return 'F';
             }
 
             return 'G'; // > 110
         }
-        if ($dpe_ges <= 70) {
+        if ($dpe_ges < 70) {
             return 'E';
         }
-        if ($dpe_ges <= 100) {
+        if ($dpe_ges < 100) {
             return 'F';
         }
 
         return 'G'; // > 100
     }
+
     #endregion
 
     #region GUADELOUPE DPE
