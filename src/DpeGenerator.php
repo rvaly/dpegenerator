@@ -5,7 +5,6 @@ namespace LBIGroupDpeGenerator;
 
 use Exception;
 use Imagick;
-use ImagickDraw;
 
 /**
  * Class DpeGenerator
@@ -69,8 +68,33 @@ class DpeGenerator
      */
     private $isDpeAltitude = false;
 
-
+    /**
+     * Define size type of DPE pics
+     * @var string
+     */
     private $size = self::PRINT_SIZE_TYPE;
+
+    /**
+     * Min value for consumption
+     * @var int
+     */
+    private $depensesMin = 0;
+    /**
+     * MAX value for consumption
+     * @var int
+     */
+    private $depensesMax = 0;
+    /**
+     * Currency
+     * @var string
+     */
+    private $devise = "€";
+    /**
+     * Reference years for consuption data
+     * @var int
+     */
+    private $yearRef = 0;
+
 
     /**
      * constant to define the type
@@ -229,6 +253,70 @@ class DpeGenerator
         return $this->isDpeAltitude;
     }
 
+    /**
+     * @return int
+     */
+    public function getDepensesMin()
+    {
+        return $this->depensesMin;
+    }
+
+    /**
+     * @param int $depensesMin
+     */
+    public function setDepensesMin($depensesMin)
+    {
+        $this->depensesMin = $depensesMin;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDepensesMax()
+    {
+        return $this->depensesMax;
+    }
+
+    /**
+     * @param int $depensesMax
+     */
+    public function setDepensesMax($depensesMax)
+    {
+        $this->depensesMax = $depensesMax;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDevise()
+    {
+        return $this->devise;
+    }
+
+    /**
+     * @param string $devise
+     */
+    public function setDevise($devise)
+    {
+        $this->devise = $devise;
+    }
+
+    /**
+     * @return int
+     */
+    public function getYearRef()
+    {
+        return $this->yearRef;
+    }
+
+    /**
+     * @param int $yearRef
+     */
+    public function setYearRef($yearRef)
+    {
+        $this->yearRef = $yearRef;
+    }
+
 
 #endregion
 
@@ -341,9 +429,8 @@ class DpeGenerator
 
             }
             throw new Exception('Sorry our JSON is gone away', 500);
-        } else {
-            throw new Exception('Your value for DPE is not correct, please fill in a valid integer', 500);
         }
+        throw new Exception('Your value for DPE is not correct, please fill in a valid integer', 500);
     }
 
     /**
@@ -392,9 +479,8 @@ class DpeGenerator
                 return $image;
             }
             throw new Exception('Sorry our JSON is gone away', 500);
-        } else {
-            throw new Exception('Your value for GES is not correct, please fill in a valid integer', 500);
         }
+        throw new Exception('Your value for GES is not correct, please fill in a valid integer', 500);
     }
 
     /**
@@ -406,42 +492,82 @@ class DpeGenerator
         $dpe_cons = $this->getDpeVal();
         $dpe_ges = $this->getGesVal();
         $isDpeAltitude = $this->getIsDpeAltitude();
+
         if ($dpe_cons < 70 && $dpe_ges < 6) {
             return 'A';
         }
-        if ($dpe_cons <= 110 && $dpe_ges <= 11) {
+        if ($dpe_cons < 110 && $dpe_ges < 11) {
             return 'B';
         }
-        if ($dpe_cons <= 180 && $dpe_ges <= 30) {
+        if ($dpe_cons < 180 && $dpe_ges < 30) {
             return 'C';
         }
-        if ($dpe_cons <= 250 && $dpe_ges <= 50) {
+        if ($dpe_cons < 250 && $dpe_ges < 50) {
             return 'D';
         }
         if ($isDpeAltitude) {
-            if ($dpe_cons <= 390 && $dpe_ges <= 80) {
+            if ($dpe_cons < 390 && $dpe_ges < 80) {
                 return 'E';
             }
-            if ($dpe_cons <= 500 && $dpe_ges <= 110) {
+            if ($dpe_cons < 500 && $dpe_ges < 110) {
                 return 'F';
             }
-            if ($dpe_cons > 500 || $dpe_ges > 110) {
+            if ($dpe_cons >= 500 || $dpe_ges >= 110) {
                 return 'G';
             }
         }
-        if ($dpe_cons <= 330 && $dpe_ges <= 70) {
+        if ($dpe_cons < 330 && $dpe_ges < 70) {
             return 'E';
         }
-        if ($dpe_cons <= 420 && $dpe_ges <= 100) {
+        if ($dpe_cons < 420 && $dpe_ges < 100) {
             return 'F';
         }
-        if ($dpe_cons > 420 || $dpe_ges > 100) {
+        if ($dpe_cons >= 420 || $dpe_ges >= 100) {
             return 'G';
         }
 
         return null;
     }
 
+    /**
+     * This function allows you to retrieve the letter of the DPEG according to its value DPE
+     * @return string|null
+     */
+    public function getNewLetterDPE()
+    {
+        $dpe_cons = $this->getDpeVal();
+        $isDpeAltitude = $this->getIsDpeAltitude();
+        if ($dpe_cons < 70) {
+            return 'A';
+        }
+        if ($dpe_cons < 110) {
+            return 'B';
+        }
+        if ($dpe_cons < 180) {
+            return 'C';
+        }
+        if ($dpe_cons < 250) {
+            return 'D';
+        }
+        if ($isDpeAltitude) {
+            if ($dpe_cons < 390) {
+                return 'E';
+            }
+            if ($dpe_cons < 500) {
+                return 'F';
+            }
+
+            return 'G'; // >= 500
+        }
+        if ($dpe_cons < 330) {
+            return 'E';
+        }
+        if ($dpe_cons < 420) {
+            return 'F';
+        }
+
+        return 'G'; // >= 420
+    }
 
     /**
      * This function allows you to retrieve the letter of the GES according to its value of GES only
@@ -454,33 +580,57 @@ class DpeGenerator
         if ($dpe_ges < 6) {
             return 'A';
         }
-        if ($dpe_ges <= 11) {
+        if ($dpe_ges < 11) {
             return 'B';
         }
-        if ($dpe_ges <= 30) {
+        if ($dpe_ges < 30) {
             return 'C';
         }
-        if ($dpe_ges <= 50) {
+        if ($dpe_ges < 50) {
             return 'D';
         }
         if ($isDpeAltitude) {
-            if ($dpe_ges <= 80) {
+            if ($dpe_ges < 80) {
                 return 'E';
             }
-            if ($dpe_ges <= 110) {
+            if ($dpe_ges < 110) {
                 return 'F';
             }
 
             return 'G'; // > 110
         }
-        if ($dpe_ges <= 70) {
+        if ($dpe_ges < 70) {
             return 'E';
         }
-        if ($dpe_ges <= 100) {
+        if ($dpe_ges < 100) {
             return 'F';
         }
 
         return 'G'; // > 100
+    }
+
+
+    public function getLegalMention()
+    {
+        $depensesMin = $this->depensesMin;
+        $devise = $this->devise;
+        $depensesMax = $this->depensesMax;
+        $yearRef = $this->yearRef;
+
+        if ($depensesMin && $devise && $depensesMax && $yearRef) {
+            $string = <<<HTML
+ Montant estimé des dépenses annuelles d'énergie de ce logement pour un usage standard est compris entre { $depensesMin } { $devise } et { $depensesMax } { $devise }. { $yearRef } étant l'année de référence des prix de l'énergie utilisés pour établir cette estimation.
+HTML;
+            if ($this->dpeVal > 330) {
+                $string .= <<<HTML
+<br>Logement à consommation énergétique excessive.
+HTML;
+            }
+
+            return $string;
+        }
+
+        return null;
     }
     #endregion
 
@@ -532,9 +682,8 @@ class DpeGenerator
                 return $image;
             }
             throw new Exception('Sorry our JSON is gone away', 500);
-        } else {
-            throw new Exception('Your value for GES is not correct, please fill in a valid integer', 500);
         }
+        throw new Exception('Your value for GES is not correct, please fill in a valid integer', 500);
     }
 
     /**
@@ -563,7 +712,7 @@ class DpeGenerator
         if ($dpe_cons <= 60) {
             return 'E';
         }
-        if ($dpe_cons <= 90) {
+        if ($dpe_cons >= 90) {
             return 'F';
         }
 
