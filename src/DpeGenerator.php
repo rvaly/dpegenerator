@@ -619,7 +619,7 @@ class DpeGenerator
 
         if ($depensesMin && $devise && $depensesMax && $yearRef) {
             $string = <<<HTML
- Montant estimé des dépenses annuelles d'énergie de ce logement pour un usage standard est compris entre { $depensesMin } { $devise } et { $depensesMax } { $devise }. { $yearRef } étant l'année de référence des prix de l'énergie utilisés pour établir cette estimation.
+ Montant estimé des dépenses annuelles d'énergie de ce logement pour un usage standard est compris entre {$depensesMin}{$devise} et {$depensesMax}{$devise}. {$yearRef} étant l'année de référence des prix de l'énergie utilisés pour établir cette estimation.
 HTML;
             if ($this->dpeVal > 330) {
                 $string .= <<<HTML
