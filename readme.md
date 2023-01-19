@@ -95,3 +95,5 @@ echo $dpe->generatePicture();
 ``2.0.1`` : stable version ONLY for PHP >= 7.1 ;
 
 ``2.1`` : addition DPEG for Guadeloupe via iso code GP;
+
+``2.3`` : addition Final consuption and PHP =>7.4;

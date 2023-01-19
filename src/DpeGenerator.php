@@ -12,6 +12,7 @@ use ImagickDraw;
  * @package LBIGroupDpeGenerator
  */
 class DpeGenerator
+
 {
 
     /**
@@ -58,6 +59,12 @@ class DpeGenerator
     private $gesVal;
 
     /**
+     * value of final consumption
+     * @var
+     */
+    private $valFinalConsumption;
+
+    /**
      * value of iso CODE
      * @var
      */
@@ -97,7 +104,8 @@ class DpeGenerator
         }
         $this->json = json_decode(file_get_contents($fileName));
     }
-#region GETTER/SETTER
+
+    #region GETTER/SETTER
 
     /**
      * @param $generateImage
@@ -214,6 +222,22 @@ class DpeGenerator
     }
 
     /**
+     * @param int $valFinalConsumption
+     */
+    public function setValFinalConsumption(int $valFinalConsumption): void
+    {
+        $this->valFinalConsumption = $valFinalConsumption;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getValFinalConsumption(): int
+    {
+        return $this->valFinalConsumption;
+    }
+
+    /**
      * @param bool $isDpeAltitude
      */
     public function setIsDpeAltitude(bool $isDpeAltitude): void
@@ -229,8 +253,7 @@ class DpeGenerator
         return $this->isDpeAltitude;
     }
 
-
-#endregion
+    #endregion
 
     /**
      * This function allows you to launch the generation of your image according to the parameters entered
@@ -258,7 +281,6 @@ class DpeGenerator
             throw $exception;
         }
     }
-
 
     #region FRENCH DPE
 
@@ -291,7 +313,6 @@ class DpeGenerator
                 $x_ges_val = 90 + (20 * (3 - strlen($this->getGesVal())));
                 $x_ges_text = 110;
             }
-
             if ($dpeConf) {
                 $image = new Imagick($dirSource . $dpeConf->img);
 
@@ -325,8 +346,52 @@ class DpeGenerator
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
                 $draw->setStrokeWidth(1);
                 $draw->setFontSize($fontText);
-
                 $image->annotateimage($draw, $x_ges_text, $dpeConf->text, 0, self::KG_CO2_M2);
+
+
+                $draw = new \ImagickDraw();
+                $draw->setStrokeColor('black');
+                $draw->setFillColor('black');
+                $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
+                $draw->setStrokeWidth(1);
+                $draw->setFontSize($fontText);
+                $image->annotateimage($draw, $x_ges_text + 10, $dpeConf->text - 80, 0, "émissions");
+
+                $draw = new \ImagickDraw();
+                $draw->setStrokeColor('black');
+                $draw->setFillColor('black');
+                $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
+                $draw->setStrokeWidth(1);
+                $draw->setFontSize($fontText);
+                $image->annotateimage($draw, $x_dpe_text - 10, $dpeConf->text - 95, 0, "consommation");
+
+                $draw = new \ImagickDraw();
+                $draw->setStrokeColor('grey');
+                $draw->setFillColor('grey');
+                $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
+                $draw->setStrokeWidth(1);
+                $draw->setFontSize($fontText);
+                $image->annotateimage($draw, $x_dpe_text - 20, $dpeConf->text - 80, 0, "(énergie primaire)");
+
+                if ($this->getValFinalConsumption() && $this->getValFinalConsumption() > 0) {
+                    $draw = new \ImagickDraw();
+                    $draw->setStrokeColor('grey');
+                    $draw->setFillColor('grey');
+                    $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
+                    $draw->setStrokeWidth(1);
+                    $draw->setFontSize($fontText);
+                    $image->annotateimage($draw, $x_dpe_text - 13, $dpeConf->text + 25, 0, $this->getValFinalConsumption()." kWh/m2/an");
+
+                    $draw = new \ImagickDraw();
+                    $draw->setStrokeColor('grey');
+                    $draw->setFillColor('grey');
+                    $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
+                    $draw->setStrokeWidth(1);
+                    $draw->setFontSize($fontText);
+                    $image->annotateimage($draw, $x_dpe_text - 15, $dpeConf->text + 35, 0, "d'énergie finale");
+                }
+
+
                 $image->setImageFormat('png');
                 $image->setImageAlphaChannel(Imagick::ALPHACHANNEL_REMOVE);
 
@@ -416,39 +481,78 @@ class DpeGenerator
         if ($dpe_cons < 70 && $dpe_ges < 6) {
             return 'A';
         }
-        if ($dpe_cons <= 110 && $dpe_ges <= 11) {
+        if ($dpe_cons < 110 && $dpe_ges < 11) {
             return 'B';
         }
-        if ($dpe_cons <= 180 && $dpe_ges <= 30) {
+        if ($dpe_cons < 180 && $dpe_ges < 30) {
             return 'C';
         }
-        if ($dpe_cons <= 250 && $dpe_ges <= 50) {
+        if ($dpe_cons < 250 && $dpe_ges < 50) {
             return 'D';
         }
         if ($isDpeAltitude) {
-            if ($dpe_cons <= 390 && $dpe_ges <= 80) {
+            if ($dpe_cons < 390 && $dpe_ges < 80) {
                 return 'E';
             }
-            if ($dpe_cons <= 500 && $dpe_ges <= 110) {
+            if ($dpe_cons < 500 && $dpe_ges < 110) {
                 return 'F';
             }
-            if ($dpe_cons > 500 || $dpe_ges > 110) {
+            if ($dpe_cons >= 500 || $dpe_ges >= 110) {
                 return 'G';
             }
         }
-        if ($dpe_cons <= 330 && $dpe_ges <= 70) {
+        if ($dpe_cons < 330 && $dpe_ges < 70) {
             return 'E';
         }
-        if ($dpe_cons <= 420 && $dpe_ges <= 100) {
+        if ($dpe_cons < 420 && $dpe_ges < 100) {
             return 'F';
         }
-        if ($dpe_cons > 420 || $dpe_ges > 100) {
+        if ($dpe_cons >= 420 || $dpe_ges >= 100) {
             return 'G';
         }
 
         return null;
     }
 
+    /**
+     * This function allows you to retrieve the letter of the DPEG according to its value DPE
+     * @return string|null
+     */
+    public function getNewLetterDPE(): ?string
+    {
+        $dpe_cons = $this->getDpeVal();
+        $isDpeAltitude = $this->getIsDpeAltitude();
+        if ($dpe_cons < 70) {
+            return 'A';
+        }
+        if ($dpe_cons < 110) {
+            return 'B';
+        }
+        if ($dpe_cons < 180) {
+            return 'C';
+        }
+        if ($dpe_cons < 250) {
+            return 'D';
+        }
+        if ($isDpeAltitude) {
+            if ($dpe_cons < 390) {
+                return 'E';
+            }
+            if ($dpe_cons < 500) {
+                return 'F';
+            }
+
+            return 'G'; // >= 500
+        }
+        if ($dpe_cons < 330) {
+            return 'E';
+        }
+        if ($dpe_cons < 420) {
+            return 'F';
+        }
+
+        return 'G'; // >= 420
+    }
 
     /**
      * This function allows you to retrieve the letter of the GES according to its value of GES only
@@ -461,34 +565,35 @@ class DpeGenerator
         if ($dpe_ges < 6) {
             return 'A';
         }
-        if ($dpe_ges <= 11) {
+        if ($dpe_ges < 11) {
             return 'B';
         }
-        if ($dpe_ges <= 30) {
+        if ($dpe_ges < 30) {
             return 'C';
         }
-        if ($dpe_ges <= 50) {
+        if ($dpe_ges < 50) {
             return 'D';
         }
         if ($isDpeAltitude) {
-            if ($dpe_ges <= 80) {
+            if ($dpe_ges < 80) {
                 return 'E';
             }
-            if ($dpe_ges <= 110) {
+            if ($dpe_ges < 110) {
                 return 'F';
             }
 
             return 'G'; // > 110
         }
-        if ($dpe_ges <= 70) {
+        if ($dpe_ges < 70) {
             return 'E';
         }
-        if ($dpe_ges <= 100) {
+        if ($dpe_ges < 100) {
             return 'F';
         }
 
         return 'G'; // > 100
     }
+
     #endregion
 
     #region GUADELOUPE DPE
