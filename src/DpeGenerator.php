@@ -316,7 +316,7 @@ class DpeGenerator
             if ($dpeConf) {
                 $image = new Imagick($dirSource . $dpeConf->img);
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -324,7 +324,7 @@ class DpeGenerator
                 $draw->setFontSize($fontValue);
                 $image->annotateimage($draw, $x_dpe_val, $dpeConf->val, 0, $this->getDpeVal());
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -332,7 +332,7 @@ class DpeGenerator
                 $draw->setFontSize($fontText);
                 $image->annotateimage($draw, $x_dpe_text, $dpeConf->text, 0, self::KWH_M2);
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -340,7 +340,7 @@ class DpeGenerator
                 $draw->setFontSize($fontValue);
                 $image->annotateimage($draw, $x_ges_val, $dpeConf->val, 0, $this->getGesVal());
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -349,7 +349,7 @@ class DpeGenerator
                 $image->annotateimage($draw, $x_ges_text, $dpeConf->text, 0, self::KG_CO2_M2);
 
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -357,7 +357,7 @@ class DpeGenerator
                 $draw->setFontSize($fontText);
                 $image->annotateimage($draw, $x_ges_text + 10, $dpeConf->text - 80, 0, "émissions");
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -365,7 +365,7 @@ class DpeGenerator
                 $draw->setFontSize($fontText);
                 $image->annotateimage($draw, $x_dpe_text - 10, $dpeConf->text - 95, 0, "consommation");
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('grey');
                 $draw->setFillColor('grey');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -374,15 +374,15 @@ class DpeGenerator
                 $image->annotateimage($draw, $x_dpe_text - 20, $dpeConf->text - 80, 0, "(énergie primaire)");
 
                 if ($this->getValFinalConsumption() && $this->getValFinalConsumption() > 0) {
-                    $draw = new \ImagickDraw();
+                    $draw = new ImagickDraw();
                     $draw->setStrokeColor('grey');
                     $draw->setFillColor('grey');
                     $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
                     $draw->setStrokeWidth(1);
                     $draw->setFontSize($fontText);
-                    $image->annotateimage($draw, $x_dpe_text - 13, $dpeConf->text + 25, 0, $this->getValFinalConsumption()." kWh/m2/an");
+                    $image->annotateimage($draw, $x_dpe_text - 13, $dpeConf->text + 25, 0, $this->getValFinalConsumption() . " kWh/m2/an");
 
-                    $draw = new \ImagickDraw();
+                    $draw = new ImagickDraw();
                     $draw->setStrokeColor('grey');
                     $draw->setFillColor('grey');
                     $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -409,9 +409,8 @@ class DpeGenerator
 
             }
             throw new Exception('Sorry our JSON is gone away', 500);
-        } else {
-            throw new Exception('Your value for DPE is not correct, please fill in a valid integer', 500);
         }
+        throw new Exception('Your value for DPE is not correct, please fill in a valid integer', 500);
     }
 
     /**
@@ -433,7 +432,7 @@ class DpeGenerator
             if ($gesConf) {
                 $image = new Imagick($dirSource . $gesConf->img);
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -441,7 +440,7 @@ class DpeGenerator
                 $draw->setFontSize(60);
                 $image->annotateimage($draw, $gesConf->ges_val, $gesConf->x_val, 0, $this->getGesVal());
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -463,9 +462,8 @@ class DpeGenerator
                 return $image;
             }
             throw new Exception('Sorry our JSON is gone away', 500);
-        } else {
-            throw new Exception('Your value for GES is not correct, please fill in a valid integer', 500);
         }
+        throw new Exception('Your value for GES is not correct, please fill in a valid integer', 500);
     }
 
     /**
@@ -612,14 +610,14 @@ class DpeGenerator
                 $imageEtiquette = new Imagick(__DIR__ . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . "etiquette_cons_void.png");
                 $image->compositeImage($imageEtiquette, Imagick::COMPOSITE_OVER, $this->json->dpe->{$letterDPEG}->img_x, $this->json->dpe->{$letterDPEG}->img_y);
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('white');
                 $draw->setFillColor('white');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
                 $draw->setStrokeWidth(1);
                 $draw->setFontSize(40);
                 $image->annotateimage($draw, $this->json->dpe->{$letterDPEG}->value_x, $this->json->dpe->{$letterDPEG}->value_y, 0, $this->getDpeVal());
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -644,9 +642,8 @@ class DpeGenerator
                 return $image;
             }
             throw new Exception('Sorry our JSON is gone away', 500);
-        } else {
-            throw new Exception('Your value for GES is not correct, please fill in a valid integer', 500);
         }
+        throw new Exception('Your value for GES is not correct, please fill in a valid integer', 500);
     }
 
     /**
