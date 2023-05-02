@@ -660,22 +660,22 @@ class DpeGenerator
         if ($dpe_cons > 90) {
             return 'G';
         }
-        if ($dpe_cons <= 15) {
+        if ($dpe_cons < 15) {
             return 'A';
         }
-        if ($dpe_cons <= 25) {
+        if ($dpe_cons < 25) {
             return 'B';
         }
-        if ($dpe_cons <= 30) {
+        if ($dpe_cons < 30) {
             return 'C';
         }
-        if ($dpe_cons <= 45) {
+        if ($dpe_cons < 45) {
             return 'D';
         }
-        if ($dpe_cons <= 60) {
+        if ($dpe_cons < 60) {
             return 'E';
         }
-        if ($dpe_cons <= 90) {
+        if ($dpe_cons < 90) {
             return 'F';
         }
 
