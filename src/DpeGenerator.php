@@ -80,6 +80,28 @@ class DpeGenerator
     private $size = self::PRINT_SIZE_TYPE;
 
     /**
+     * Min value for consumption
+     * @var int
+     */
+    private $depensesMin = 0;
+    /**
+     * MAX value for consumption
+     * @var int
+     */
+    private $depensesMax = 0;
+    /**
+     * Currency
+     * @var string
+     */
+    private $devise = "€";
+    /**
+     * Reference years for consuption data
+     * @var int
+     */
+    private $yearRef = 0;
+
+
+    /**
      * constant to define the type
      */
     public const DPE_TYPE = 'dpe';
@@ -253,7 +275,72 @@ class DpeGenerator
         return $this->isDpeAltitude;
     }
 
-    #endregion
+    /**
+     * @return int
+     */
+    public function getDepensesMin()
+    {
+        return $this->depensesMin;
+    }
+
+    /**
+     * @param int $depensesMin
+     */
+    public function setDepensesMin($depensesMin)
+    {
+        $this->depensesMin = $depensesMin;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDepensesMax()
+    {
+        return $this->depensesMax;
+    }
+
+    /**
+     * @param int $depensesMax
+     */
+    public function setDepensesMax($depensesMax)
+    {
+        $this->depensesMax = $depensesMax;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDevise()
+    {
+        return $this->devise;
+    }
+
+    /**
+     * @param string $devise
+     */
+    public function setDevise($devise)
+    {
+        $this->devise = $devise;
+    }
+
+    /**
+     * @return int
+     */
+    public function getYearRef()
+    {
+        return $this->yearRef;
+    }
+
+    /**
+     * @param int $yearRef
+     */
+    public function setYearRef($yearRef)
+    {
+        $this->yearRef = $yearRef;
+    }
+
+
+#endregion
 
     /**
      * This function allows you to launch the generation of your image according to the parameters entered
@@ -592,6 +679,29 @@ class DpeGenerator
         return 'G'; // > 100
     }
 
+
+    public function getLegalMention()
+    {
+        $depensesMin = $this->depensesMin;
+        $devise = $this->devise;
+        $depensesMax = $this->depensesMax;
+        $yearRef = $this->yearRef;
+
+        if ($depensesMin && $devise && $depensesMax && $yearRef) {
+            $string = <<<HTML
+ Montant estimé des dépenses annuelles d'énergie de ce logement pour un usage standard est compris entre {$depensesMin}{$devise} et {$depensesMax}{$devise}. {$yearRef} étant l'année de référence des prix de l'énergie utilisés pour établir cette estimation.
+HTML;
+            if ($this->dpeVal > 330) {
+                $string .= <<<HTML
+<br>Logement à consommation énergétique excessive.
+HTML;
+            }
+
+            return $string;
+        }
+
+        return null;
+    }
     #endregion
 
     #region GUADELOUPE DPE
