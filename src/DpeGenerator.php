@@ -442,7 +442,7 @@ class DpeGenerator
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
                 $draw->setStrokeWidth(1);
                 $draw->setFontSize($fontText);
-                $image->annotateimage($draw, $x_ges_text + 10, $dpeConf->text - 80, 0, "émissions");
+                $image->annotateimage($draw, $x_ges_text + 10, $dpeConf->text - 170, 0, "émissions");
 
                 $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
@@ -450,7 +450,7 @@ class DpeGenerator
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
                 $draw->setStrokeWidth(1);
                 $draw->setFontSize($fontText);
-                $image->annotateimage($draw, $x_dpe_text - 10, $dpeConf->text - 95, 0, "consommation");
+                $image->annotateimage($draw, $x_dpe_text - 20, $dpeConf->text - 200, 0, "consommation");
 
                 $draw = new ImagickDraw();
                 $draw->setStrokeColor('grey');
@@ -458,7 +458,7 @@ class DpeGenerator
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
                 $draw->setStrokeWidth(1);
                 $draw->setFontSize($fontText);
-                $image->annotateimage($draw, $x_dpe_text - 20, $dpeConf->text - 80, 0, "(énergie primaire)");
+                $image->annotateimage($draw, $x_dpe_text - 35, $dpeConf->text - 170, 0, "(énergie primaire)");
 
                 if ($this->getValFinalConsumption() && $this->getValFinalConsumption() > 0) {
                     $draw = new ImagickDraw();
