@@ -14,37 +14,36 @@ use ImagickDraw;
 class DpeGenerator
 
 {
-
     /**
      * JSON structure construct for DPEG generation
      * @var mixed
      */
     private $json;
-    private $default_json = __DIR__ . DIRECTORY_SEPARATOR . 'json' . DIRECTORY_SEPARATOR . 'dpe.json';
+    private string $default_json = __DIR__ . DIRECTORY_SEPARATOR . 'json' . DIRECTORY_SEPARATOR . 'dpe.json';
 
     /**
      * Picture target (ONLY if you want to generate picture on your system)
      * @var  null
      */
-    private $pictTarget;
+    private string $pictTarget;
 
     /**
      * Picture Name
      * @var null
      */
-    private $pictName;
+    private string $pictName;
 
     /**
      * Bool value for generating picture, if it's true and pictTarget is implement, your picture is generate in your target folder
      * @var bool
      */
-    private $generateImage = false;
+    private bool $generateImage = false;
 
     /**
      * type of picture dpe or ges
      * @var string
      */
-    private $type = 'dpe';
+    private string $type = 'dpe';
 
     /**
      * Value of DPE
@@ -68,14 +67,20 @@ class DpeGenerator
      * value of iso CODE
      * @var
      */
-    private $isoCode;
+    private string $isoCode;
 
     /**
      * value of isDpeAltitude
      * @var bool
      */
-    private $isDpeAltitude = false;
+    private bool $isDpeAltitude = false;
 
+
+    /**
+     * value of dpeEchelle
+     * @var string
+     */
+    private string $dpeEchelle;
 
     private $size = self::PRINT_SIZE_TYPE;
 
@@ -90,6 +95,15 @@ class DpeGenerator
 
     private const KG_CO2_M2 = 'kgCO2/m².an';
     private const KWH_M2 = 'kWh/m².an';
+
+    /**
+     * constant to define type of DPE Professional
+     */
+    public const BATIMENT_USAGE_BUREAU = "BATIMENT_USAGE_BUREAU";
+    public const BATIMENT_OCCUPATION_CONTINUE = "BATIMENT_OCCUPATION_CONTINUE";
+    public const AUTRE_CAS = "AUTRE_CAS";
+    public const CENTRE_COMMERCIAL = "CENTRE_COMMERCIAL";
+
 
     /**
      * DpeGenerator constructor.
@@ -316,7 +330,7 @@ class DpeGenerator
             if ($dpeConf) {
                 $image = new Imagick($dirSource . $dpeConf->img);
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -324,7 +338,7 @@ class DpeGenerator
                 $draw->setFontSize($fontValue);
                 $image->annotateimage($draw, $x_dpe_val, $dpeConf->val, 0, $this->getDpeVal());
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -332,7 +346,7 @@ class DpeGenerator
                 $draw->setFontSize($fontText);
                 $image->annotateimage($draw, $x_dpe_text, $dpeConf->text, 0, self::KWH_M2);
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -340,7 +354,7 @@ class DpeGenerator
                 $draw->setFontSize($fontValue);
                 $image->annotateimage($draw, $x_ges_val, $dpeConf->val, 0, $this->getGesVal());
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -349,7 +363,7 @@ class DpeGenerator
                 $image->annotateimage($draw, $x_ges_text, $dpeConf->text, 0, self::KG_CO2_M2);
 
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -357,7 +371,7 @@ class DpeGenerator
                 $draw->setFontSize($fontText);
                 $image->annotateimage($draw, $x_ges_text + 10, $dpeConf->text - 80, 0, "émissions");
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -365,7 +379,7 @@ class DpeGenerator
                 $draw->setFontSize($fontText);
                 $image->annotateimage($draw, $x_dpe_text - 10, $dpeConf->text - 95, 0, "consommation");
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('grey');
                 $draw->setFillColor('grey');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -374,15 +388,15 @@ class DpeGenerator
                 $image->annotateimage($draw, $x_dpe_text - 20, $dpeConf->text - 80, 0, "(énergie primaire)");
 
                 if ($this->getValFinalConsumption() && $this->getValFinalConsumption() > 0) {
-                    $draw = new \ImagickDraw();
+                    $draw = new ImagickDraw();
                     $draw->setStrokeColor('grey');
                     $draw->setFillColor('grey');
                     $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
                     $draw->setStrokeWidth(1);
                     $draw->setFontSize($fontText);
-                    $image->annotateimage($draw, $x_dpe_text - 13, $dpeConf->text + 25, 0, $this->getValFinalConsumption()." kWh/m2/an");
+                    $image->annotateimage($draw, $x_dpe_text - 13, $dpeConf->text + 25, 0, $this->getValFinalConsumption() . " kWh/m2/an");
 
-                    $draw = new \ImagickDraw();
+                    $draw = new ImagickDraw();
                     $draw->setStrokeColor('grey');
                     $draw->setFillColor('grey');
                     $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -433,7 +447,7 @@ class DpeGenerator
             if ($gesConf) {
                 $image = new Imagick($dirSource . $gesConf->img);
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -441,7 +455,7 @@ class DpeGenerator
                 $draw->setFontSize(60);
                 $image->annotateimage($draw, $gesConf->ges_val, $gesConf->x_val, 0, $this->getGesVal());
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -612,14 +626,14 @@ class DpeGenerator
                 $imageEtiquette = new Imagick(__DIR__ . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . "etiquette_cons_void.png");
                 $image->compositeImage($imageEtiquette, Imagick::COMPOSITE_OVER, $this->json->dpe->{$letterDPEG}->img_x, $this->json->dpe->{$letterDPEG}->img_y);
 
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('white');
                 $draw->setFillColor('white');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
                 $draw->setStrokeWidth(1);
                 $draw->setFontSize(40);
                 $image->annotateimage($draw, $this->json->dpe->{$letterDPEG}->value_x, $this->json->dpe->{$letterDPEG}->value_y, 0, $this->getDpeVal());
-                $draw = new \ImagickDraw();
+                $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
@@ -680,6 +694,114 @@ class DpeGenerator
         }
 
         return null;
+    }
+    #endregion
+
+    #region IMMO PRO DPE
+    /**
+     * @desc Passer l'echelle de Bâtiment concérné
+     * @param string $dpeEchelle
+     */
+    public function setDpeEchelle($dpeEchelle): void
+    {
+        $this->dpeEchelle = $dpeEchelle;
+    }
+
+
+    /**
+     * * @desc Retourne la lettre de ges selon l'echelle dpe
+     * @return string
+     */
+    public function getNewLetterGESByEchelle(): string
+    {
+        switch ($this->dpeEchelle) {
+            case self::BATIMENT_USAGE_BUREAU:
+                if ($this->gesVal <= 5) {
+                    return 'A';
+                }
+                if ($this->gesVal <= 15) {
+                    return 'B';
+                }
+                if ($this->gesVal <= 30) {
+                    return 'C';
+                }
+                if ($this->gesVal <= 60) {
+                    return 'D';
+                }
+                if ($this->gesVal <= 110) {
+                    return 'E';
+                }
+                if ($this->gesVal <= 145) {
+                    return 'F';
+                }
+
+                return 'G';
+            case self::BATIMENT_OCCUPATION_CONTINUE:
+                if ($this->gesVal <= 12) {
+                    return 'A';
+                }
+                if ($this->gesVal <= 30) {
+                    return 'B';
+                }
+                if ($this->gesVal <= 65) {
+                    return 'C';
+                }
+                if ($this->gesVal <= 110) {
+                    return 'D';
+                }
+                if ($this->gesVal <= 160) {
+                    return 'E';
+                }
+                if ($this->gesVal <= 220) {
+                    return 'F';
+                }
+
+                return 'G';
+            case self::AUTRE_CAS:
+                if ($this->gesVal <= 3) {
+                    return 'A';
+                }
+                if ($this->gesVal <= 10) {
+                    return 'B';
+                }
+                if ($this->gesVal <= 25) {
+                    return 'C';
+                }
+                if ($this->gesVal <= 45) {
+                    return 'D';
+                }
+                if ($this->gesVal <= 70) {
+                    return 'E';
+                }
+                if ($this->gesVal <= 95) {
+                    return 'F';
+                }
+
+                return 'G';
+            case self::CENTRE_COMMERCIAL:
+                if ($this->gesVal <= 10) {
+                    return 'A';
+                }
+                if ($this->gesVal <= 15) {
+                    return 'B';
+                }
+                if ($this->gesVal <= 25) {
+                    return 'C';
+                }
+                if ($this->gesVal <= 35) {
+                    return 'D';
+                }
+                if ($this->gesVal <= 55) {
+                    return 'E';
+                }
+                if ($this->gesVal <= 80) {
+                    return 'F';
+                }
+
+                return 'G';
+            default:
+                return '';
+        }
     }
     #endregion
 }
