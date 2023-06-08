@@ -78,9 +78,9 @@ class DpeGenerator
 
     /**
      * value of dpeEchelle
-     * @var string
+     * @var ?string
      */
-    private string $dpeEchelle;
+    private ?string $dpeEchelle;
 
     private $size = self::PRINT_SIZE_TYPE;
 
