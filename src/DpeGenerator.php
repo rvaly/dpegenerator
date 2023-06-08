@@ -700,9 +700,9 @@ class DpeGenerator
     #region IMMO PRO DPE
     /**
      * @desc Passer l'echelle de Bâtiment concérné
-     * @param string $dpeEchelle
+     * @param ?string $dpeEchelle
      */
-    public function setDpeEchelle($dpeEchelle): void
+    public function setDpeEchelle(?string $dpeEchelle): void
     {
         $this->dpeEchelle = $dpeEchelle;
     }
