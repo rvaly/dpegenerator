@@ -671,7 +671,7 @@ class DpeGenerator
     {
         $dpe_cons = $this->getDpeVal();
 
-        if ($dpe_cons > 90) {
+        if ($dpe_cons >= 90) {
             return 'G';
         }
         if ($dpe_cons < 15) {
