@@ -531,7 +531,7 @@ class DpeGenerator
 
     public function getNewLetterDPE(): ?string
     {
-        $dpe_ges = $this->getDpeVal();
+        $dpe_cons = $this->getDpeVal();
         $superficie = $this->getSuperficie();
         $isDpeAltitude = $this->getIsDpeAltitude();
 
@@ -539,36 +539,36 @@ class DpeGenerator
             return $this->getNewLetterDPESmallSurface();
         }
 
-        if ($dpe_ges < 6) {
+        if ($dpe_cons < 70) {
             return 'A';
         }
-        if ($dpe_ges <= 11) {
+        if ($dpe_cons < 110) {
             return 'B';
         }
-        if ($dpe_ges <= 30) {
+        if ($dpe_cons < 180) {
             return 'C';
         }
-        if ($dpe_ges <= 50) {
+        if ($dpe_cons < 250) {
             return 'D';
         }
         if ($isDpeAltitude) {
-            if ($dpe_ges <= 80) {
+            if ($dpe_cons < 390) {
                 return 'E';
             }
-            if ($dpe_ges <= 110) {
+            if ($dpe_cons < 500) {
                 return 'F';
             }
 
-            return 'G'; // > 110
+            return 'G'; // >= 500
         }
-        if ($dpe_ges <= 70) {
+        if ($dpe_cons < 330) {
             return 'E';
         }
-        if ($dpe_ges <= 100) {
+        if ($dpe_cons < 420) {
             return 'F';
         }
 
-        return 'G'; // > 100
+        return 'G'; // >= 420
     }
     #endregion
 
