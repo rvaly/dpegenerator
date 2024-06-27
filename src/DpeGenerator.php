@@ -678,7 +678,7 @@ class DpeGenerator
      */
     private function getLetterDPEGSmallSurface(): ?string
     {
-        $superficie = $this->superficie;
+        $superficie = $this->superficie < 8 ? 8 : $this->superficie;
         $dpeCons = $this->getDpeVal();
         $gesCons = $this->getGesVal();
 
@@ -744,7 +744,7 @@ class DpeGenerator
     {
         $ges = $this->getGesVal();
         $isAltitude = $this->isDpeAltitude;
-        $superficie = $this->superficie;
+        $superficie = $this->superficie < 8 ? 8 : $this->superficie;
         
         $smallSurfaceObj = $this->jsonSmallSurface->standard;
 
@@ -788,7 +788,7 @@ class DpeGenerator
     private function getNewLetterDPESmallSurface(): string
     {
         $dpe = $this->getDpeVal();
-        $superficie = $this->superficie;
+        $superficie = $this->superficie < 8 ? 8 : $this->superficie;
         $isAltitude = $this->isDpeAltitude;
         $smallSurfaceObj = $this->jsonSmallSurface->standard;
 
