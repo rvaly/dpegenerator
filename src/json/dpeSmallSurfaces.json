@@ -650,5 +650,25 @@
             "CEP_f":500,
             "EGES_f":110
         }
+    },
+    "biggerSurface": {
+        "CEP_a":70,
+        "EGES_a":6,
+        "CEP_b":110,
+        "EGES_b":11,
+        "CEP_c":180,
+        "EGES_c":30,
+        "CEP_d":250,
+        "EGES_d":55,
+        "CEP_e":330,
+        "EGES_e":70,
+        "CEP_f":420,
+        "EGES_f":100
+    },
+    "biggerSurfaceAltitude": {
+        "CEP_e":390,
+        "EGES_e":80,
+        "CEP_f":500,
+        "EGES_f":120
     }
  }
