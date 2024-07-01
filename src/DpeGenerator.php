@@ -86,7 +86,7 @@ class DpeGenerator
      * valeur de la superficie
      *  @var int
      */
-    private $superficie;
+    private ?int $superficie;
 
     /**
      * value of dpeEchelle
@@ -129,6 +129,11 @@ class DpeGenerator
             $this->isoCode = 'FR';
         }
         $this->json = json_decode(file_get_contents($fileName));
+
+        if (!file_exists($fileNameSmallSurface)) {
+            $fileNameSmallSurface = $this->small_surface_file;
+        }
+        $this->jsonSmallSurface = json_decode(file_get_contents($fileNameSmallSurface));
     }
 
     #region GETTER/SETTER
