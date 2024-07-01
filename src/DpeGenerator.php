@@ -21,6 +21,13 @@ class DpeGenerator
     private $json;
     private string $default_json = __DIR__ . DIRECTORY_SEPARATOR . 'json' . DIRECTORY_SEPARATOR . 'dpe.json';
 
+     /**
+     * variables JSON pour la gestion du DPEG petites surfaces, législation 2024
+     */
+    private $jsonSmallSurface;
+    private $small_surface_file = __DIR__ . DIRECTORY_SEPARATOR . 'json' . DIRECTORY_SEPARATOR . 'dpeSmallSurfaces.json';
+
+
     /**
      * Picture target (ONLY if you want to generate picture on your system)
      * @var  null
@@ -75,6 +82,11 @@ class DpeGenerator
      */
     private bool $isDpeAltitude = false;
 
+    /**
+     * valeur de la superficie
+     *  @var int
+     */
+    private $superficie;
 
     /**
      * value of dpeEchelle
@@ -265,6 +277,22 @@ class DpeGenerator
     private function getIsDpeAltitude(): ?bool
     {
         return $this->isDpeAltitude;
+    }
+
+    /**
+     * @param int $superficie
+     */
+    public function setSuperficie(int $superficie): void
+    {
+        $this->superficie = $superficie;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSuperficie(): int
+    {
+        return $this->superficie;
     }
 
     #endregion
@@ -488,54 +516,73 @@ class DpeGenerator
      */
     public function getNewLetterDPEG(): ?string
     {
-        $dpe_cons = $this->getDpeVal();
-        $dpe_ges = $this->getGesVal();
+        $dpeCons = $this->getDpeVal();
+        $gesCons = $this->getGesVal();
         $isDpeAltitude = $this->getIsDpeAltitude();
 
-        if ($dpe_cons < 70 && $dpe_ges < 6) {
-            return 'A';
-        }
-        if ($dpe_cons < 110 && $dpe_ges < 11) {
-            return 'B';
-        }
-        if ($dpe_cons < 180 && $dpe_ges < 30) {
-            return 'C';
-        }
-        if ($dpe_cons < 250 && $dpe_ges < 50) {
-            return 'D';
-        }
-        if ($isDpeAltitude) {
-            if ($dpe_cons < 390 && $dpe_ges < 80) {
-                return 'E';
-            }
-            if ($dpe_cons < 500 && $dpe_ges < 110) {
-                return 'F';
-            }
-            if ($dpe_cons >= 500 || $dpe_ges >= 110) {
-                return 'G';
-            }
-        }
-        if ($dpe_cons < 330 && $dpe_ges < 70) {
-            return 'E';
-        }
-        if ($dpe_cons < 420 && $dpe_ges < 100) {
-            return 'F';
-        }
-        if ($dpe_cons >= 420 || $dpe_ges >= 100) {
-            return 'G';
+        if ($this->superficie && $this->superficie <= 40) {
+            return $this->getLetterDPEGSmallSurface();
         }
 
-        return null;
+        //Surface bigger than 40m2
+        $referenciel = $this->jsonSmallSurface->biggerSurface;
+        if ($isDpeAltitude) {
+            $altitudeObj = $this->jsonSmallSurface->biggerSurfaceAltitude;
+
+            $referenciel->CEP_e = $altitudeObj->CEP_e;
+            $referenciel->EGES_e = $altitudeObj->EGES_e;
+            $referenciel->CEP_f = $altitudeObj->CEP_f;
+            $referenciel->EGES_f = $altitudeObj->EGES_f;
+        }
+
+        if ($dpeCons < $referenciel->CEP_a && $gesCons < $referenciel->EGES_a) {
+            return "A";
+        }
+
+        $conditions = [
+            "B" => [
+                [$dpeCons >= $referenciel->CEP_a, $dpeCons < $referenciel->CEP_b, $gesCons < $referenciel->EGES_b],
+                [$gesCons >= $referenciel->EGES_a, $gesCons < $referenciel->EGES_b, $dpeCons < $referenciel->CEP_b],
+            ],
+            "C" => [
+                [$dpeCons >= $referenciel->CEP_b, $dpeCons < $referenciel->CEP_c, $gesCons < $referenciel->EGES_c],
+                [$gesCons >= $referenciel->EGES_b, $gesCons < $referenciel->EGES_c, $dpeCons < $referenciel->CEP_c],
+            ],
+            "D" => [
+                [$dpeCons >= $referenciel->CEP_c, $dpeCons < $referenciel->CEP_d, $gesCons < $referenciel->EGES_d],
+                [$gesCons >= $referenciel->EGES_c, $gesCons < $referenciel->EGES_d, $dpeCons < $referenciel->CEP_d],
+            ],
+            "E" => [
+                [$dpeCons >= $referenciel->CEP_d, $dpeCons < $referenciel->CEP_e, $gesCons < $referenciel->EGES_e],
+                [$gesCons >= $referenciel->EGES_d, $gesCons < $referenciel->EGES_e, $dpeCons < $referenciel->CEP_e],
+            ],
+            "F" => [
+                [$dpeCons >= $referenciel->CEP_e, $dpeCons < $referenciel->CEP_f, $gesCons < $referenciel->EGES_f],
+                [$gesCons >= $referenciel->EGES_e, $gesCons < $referenciel->EGES_f, $dpeCons < $referenciel->CEP_f],
+            ]
+        ];
+
+        foreach ($conditions as $letter => $conds) {
+            foreach ($conds as $cond) {
+                if ($cond[0] && $cond[1] && $cond[2]) {
+                    return $letter;
+                }
+            }
+        }
+
+        return "G";
     }
 
-    /**
-     * This function allows you to retrieve the letter of the DPEG according to its value DPE
-     * @return string|null
-     */
     public function getNewLetterDPE(): ?string
     {
         $dpe_cons = $this->getDpeVal();
+        $superficie = $this->getSuperficie();
         $isDpeAltitude = $this->getIsDpeAltitude();
+
+        if ($superficie && $superficie <= 40) {
+            return $this->getNewLetterDPESmallSurface();
+        }
+
         if ($dpe_cons < 70) {
             return 'A';
         }
@@ -576,6 +623,12 @@ class DpeGenerator
     {
         $dpe_ges = $this->getGesVal();
         $isDpeAltitude = $this->getIsDpeAltitude();
+        $superficie = $this->getSuperficie();
+
+        if ($superficie && $superficie <= 40) {
+            return $this->getNewLetterGESSmallSurface();
+        }
+
         if ($dpe_ges < 6) {
             return 'A';
         }
@@ -585,7 +638,7 @@ class DpeGenerator
         if ($dpe_ges < 30) {
             return 'C';
         }
-        if ($dpe_ges < 50) {
+        if ($dpe_ges < 55) {
             return 'D';
         }
         if ($isDpeAltitude) {
@@ -606,6 +659,160 @@ class DpeGenerator
         }
 
         return 'G'; // > 100
+    }
+
+     /**
+     * Fonction permettant le calcul de la lettre DPE pour les petites surfaces depuis la nouvelle législation de 2024
+     * 
+     * @return string
+     */
+    private function getLetterDPEGSmallSurface(): ?string
+    {
+        $superficie = $this->superficie < 8 ? 8 : $this->superficie;
+        $dpeCons = $this->getDpeVal();
+        $gesCons = $this->getGesVal();
+
+        $smallSurfaceObj = $this->jsonSmallSurface->standard;
+
+        if (property_exists($smallSurfaceObj, $superficie)) {
+            $referenciel = $smallSurfaceObj->$superficie;
+
+            if ($this->isDpeAltitude) {
+                $altitudeObj = $this->jsonSmallSurface->altitude->$superficie;
+
+                $referenciel->CEP_e = $altitudeObj->CEP_e;
+                $referenciel->EGES_e = $altitudeObj->EGES_e;
+                $referenciel->CEP_f = $altitudeObj->CEP_f;
+                $referenciel->EGES_f = $altitudeObj->EGES_f;
+            }
+
+            if ($dpeCons < $referenciel->CEP_a && $gesCons < $referenciel->EGES_a) {
+                return "A";
+            }
+
+            $conditions = [
+                "B" => [
+                    [$dpeCons >= $referenciel->CEP_a, $dpeCons < $referenciel->CEP_b, $gesCons < $referenciel->EGES_b],
+                    [$gesCons >= $referenciel->EGES_a, $gesCons < $referenciel->EGES_b, $dpeCons < $referenciel->CEP_b],
+                ],
+                "C" => [
+                    [$dpeCons >= $referenciel->CEP_b, $dpeCons < $referenciel->CEP_c, $gesCons < $referenciel->EGES_c],
+                    [$gesCons >= $referenciel->EGES_b, $gesCons < $referenciel->EGES_c, $dpeCons < $referenciel->CEP_c],
+                ],
+                "D" => [
+                    [$dpeCons >= $referenciel->CEP_c, $dpeCons < $referenciel->CEP_d, $gesCons < $referenciel->EGES_d],
+                    [$gesCons >= $referenciel->EGES_c, $gesCons < $referenciel->EGES_d, $dpeCons < $referenciel->CEP_d],
+                ],
+                "E" => [
+                    [$dpeCons >= $referenciel->CEP_d, $dpeCons < $referenciel->CEP_e, $gesCons < $referenciel->EGES_e],
+                    [$gesCons >= $referenciel->EGES_d, $gesCons < $referenciel->EGES_e, $dpeCons < $referenciel->CEP_e],
+                ],
+                "F" => [
+                    [$dpeCons >= $referenciel->CEP_e, $dpeCons < $referenciel->CEP_f, $gesCons < $referenciel->EGES_f],
+                    [$gesCons >= $referenciel->EGES_e, $gesCons < $referenciel->EGES_f, $dpeCons < $referenciel->CEP_f],
+                ]
+            ];
+
+            foreach ($conditions as $letter => $conds) {
+                foreach ($conds as $cond) {
+                    if ($cond[0] && $cond[1] && $cond[2]) {
+                        return $letter;
+                    }
+                }
+            }
+
+            return "G";
+        }
+
+        return "";
+    }
+
+    /**
+     * @return string
+     */
+    private function getNewLetterGESSmallSurface(): string
+    {
+        $ges = $this->getGesVal();
+        $isAltitude = $this->isDpeAltitude;
+        $superficie = $this->superficie < 8 ? 8 : $this->superficie;
+        
+        $smallSurfaceObj = $this->jsonSmallSurface->standard;
+
+        if (property_exists($smallSurfaceObj, $superficie)) {
+            $referenciel = $smallSurfaceObj->$superficie;
+
+            if ($isAltitude) {
+                $altitudeObj = $this->jsonSmallSurface->altitude->$superficie;
+
+                $referenciel->EGES_e = $altitudeObj->EGES_e;
+                $referenciel->EGES_f = $altitudeObj->EGES_f;
+            }
+
+            if ($ges < $referenciel->EGES_a) {
+                return 'A';
+            }
+            if ($ges < $referenciel->EGES_b) {
+                return 'B';
+            }
+            if ($ges < $referenciel->EGES_c) {
+                return 'C';
+            }
+            if ($ges < $referenciel->EGES_d) {
+                return 'D';
+            }
+            if ($ges < $referenciel->EGES_e) {
+                return 'E';
+            }
+            if ($ges < $referenciel->EGES_f) {
+                return 'F';
+            }
+
+            return 'G';
+        }
+        return "";
+    }
+
+    /**
+     * @return string
+     */
+    private function getNewLetterDPESmallSurface(): string
+    {
+        $dpe = $this->getDpeVal();
+        $superficie = $this->superficie < 8 ? 8 : $this->superficie;
+        $isAltitude = $this->isDpeAltitude;
+        $smallSurfaceObj = $this->jsonSmallSurface->standard;
+
+        if (property_exists($smallSurfaceObj, $superficie)) {
+            $referenciel = $smallSurfaceObj->$superficie;
+
+            if ($isAltitude) {
+                $altitudeObj = $this->jsonSmallSurface->altitude->$superficie;
+
+                $referenciel->CEP_e = $altitudeObj->CEP_e;
+                $referenciel->CEP_f = $altitudeObj->CEP_f;
+            }
+
+            if ($dpe < $referenciel->CEP_a) {
+                return 'A';
+            }
+            if ($dpe < $referenciel->CEP_b) {
+                return 'B';
+            }
+            if ($dpe < $referenciel->CEP_c) {
+                return 'C';
+            }
+            if ($dpe < $referenciel->CEP_d) {
+                return 'D';
+            }
+            if ($dpe < $referenciel->CEP_e) {
+                return 'E';
+            }
+            if ($dpe < $referenciel->CEP_f) {
+                return 'F';
+            }
+            return 'G';
+        }
+        return "";
     }
 
     #endregion
