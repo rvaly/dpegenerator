@@ -130,6 +130,7 @@ class DpeGenerator
         }
         $this->json = json_decode(file_get_contents($fileName));
 
+        $fileNameSmallSurface = __DIR__ . DIRECTORY_SEPARATOR . 'json' . DIRECTORY_SEPARATOR . $this->isoCode . DIRECTORY_SEPARATOR . 'dpeSmallSurfaces.json';
         if (!file_exists($fileNameSmallSurface)) {
             $fileNameSmallSurface = $this->small_surface_file;
         }
