@@ -21,7 +21,7 @@ class DpeGenerator
     private $json;
     private string $default_json = __DIR__ . DIRECTORY_SEPARATOR . 'json' . DIRECTORY_SEPARATOR . 'dpe.json';
 
-     /**
+    /**
      * variables JSON pour la gestion du DPEG petites surfaces, législation 2024
      */
     private $jsonSmallSurface;
@@ -84,9 +84,9 @@ class DpeGenerator
 
     /**
      * valeur de la superficie
-     *  @var int
+     * @var int
      */
-    private $superficie;
+    private ?int $superficie;
 
     /**
      * value of dpeEchelle
@@ -129,6 +129,12 @@ class DpeGenerator
             $this->isoCode = 'FR';
         }
         $this->json = json_decode(file_get_contents($fileName));
+
+        $fileNameSmallSurface = __DIR__ . DIRECTORY_SEPARATOR . 'json' . DIRECTORY_SEPARATOR . $this->isoCode . DIRECTORY_SEPARATOR . 'dpeSmallSurfaces.json';
+        if (!file_exists($fileNameSmallSurface)) {
+            $fileNameSmallSurface = $this->small_surface_file;
+        }
+        $this->jsonSmallSurface = json_decode(file_get_contents($fileNameSmallSurface));
     }
 
     #region GETTER/SETTER
@@ -290,9 +296,9 @@ class DpeGenerator
     /**
      * @return int
      */
-    public function getSuperficie(): int
+    public function getSuperficie(): ?int
     {
-        return $this->superficie;
+        return $this->superficie ?? null;
     }
 
     #endregion
@@ -520,7 +526,7 @@ class DpeGenerator
         $gesCons = $this->getGesVal();
         $isDpeAltitude = $this->getIsDpeAltitude();
 
-        if ($this->superficie && $this->superficie <= 40) {
+        if ($this->getSuperficie() && $this->getSuperficie() <= 40) {
             return $this->getLetterDPEGSmallSurface();
         }
 
@@ -661,14 +667,14 @@ class DpeGenerator
         return 'G'; // > 100
     }
 
-     /**
+    /**
      * Fonction permettant le calcul de la lettre DPE pour les petites surfaces depuis la nouvelle législation de 2024
-     * 
+     *
      * @return string
      */
     private function getLetterDPEGSmallSurface(): ?string
     {
-        $superficie = $this->superficie < 8 ? 8 : $this->superficie;
+        $superficie = $this->getSuperficie() < 8 ? 8 : $this->getSuperficie();
         $dpeCons = $this->getDpeVal();
         $gesCons = $this->getGesVal();
 
@@ -734,8 +740,8 @@ class DpeGenerator
     {
         $ges = $this->getGesVal();
         $isAltitude = $this->isDpeAltitude;
-        $superficie = $this->superficie < 8 ? 8 : $this->superficie;
-        
+        $superficie = $this->getSuperficie() < 8 ? 8 : $this->getSuperficie();
+
         $smallSurfaceObj = $this->jsonSmallSurface->standard;
 
         if (property_exists($smallSurfaceObj, $superficie)) {
@@ -778,7 +784,7 @@ class DpeGenerator
     private function getNewLetterDPESmallSurface(): string
     {
         $dpe = $this->getDpeVal();
-        $superficie = $this->superficie < 8 ? 8 : $this->superficie;
+        $superficie = $this->getSuperficie() < 8 ? 8 : $this->getSuperficie();
         $isAltitude = $this->isDpeAltitude;
         $smallSurfaceObj = $this->jsonSmallSurface->standard;
 
