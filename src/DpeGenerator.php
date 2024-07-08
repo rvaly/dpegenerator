@@ -644,7 +644,7 @@ class DpeGenerator
         if ($dpe_ges < 30) {
             return 'C';
         }
-        if ($dpe_ges < 55) {
+        if ($dpe_ges < 50) {
             return 'D';
         }
         if ($isDpeAltitude) {
