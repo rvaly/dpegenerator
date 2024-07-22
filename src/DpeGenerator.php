@@ -354,11 +354,11 @@ class DpeGenerator
             if ($this->getImageSize() === self::WEB_SIZE_TYPE && isset($this->json->web)) {
                 $dpeConf = $this->json->web->dpe->{$letterDpe};
                 $dirSource = __DIR__ . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $this->isoCode . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR;
-                $fontValue = 35;
-                $fontText = 12;
-                $x_dpe_val = 17 + (8 * (3 - strlen($this->getDpeVal())));
+                $fontValue = 50;
+                $fontText = 13;
+                $x_dpe_val = 4 + (12 * (3 - strlen($this->getDpeVal())));
                 $x_dpe_text = 18;
-                $x_ges_val = 105 + (8 * (3 - strlen($this->getGesVal())));
+                $x_ges_val = 92 + (12 * (3 - strlen($this->getGesVal())));
                 $x_ges_text = 98;
             }
 
@@ -367,11 +367,11 @@ class DpeGenerator
 
                 //Top text
                 $draw = new ImagickDraw();
-                $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSans-Medium.otf');
+                $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSans-Bold.otf');
                 $draw->setFillColor('#00A06D');
-                $draw->setFontSize(12);
+                $draw->setFontSize(20);
                 $draw->setFontWeight(200);
-                $image->annotateImage($draw, 172.26, 15, 0,'logement extrêmement performant');
+                $image->annotateImage($draw, 172.26, 17, 0,'logement extrêmement performant');
 
                 if ($letterDpe === "A") {
                     $draw = new ImagickDraw();
@@ -384,7 +384,7 @@ class DpeGenerator
                     $draw->setFillColor('black');
                     $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Regular.otf');
                     $draw->setFontSize($fontText);
-                    $image->annotateimage($draw, $x_dpe_text, 85, 0, self::KWH_M2);
+                    $image->annotateimage($draw, $x_dpe_text, 90, 0, self::KWH_M2);
 
                     $draw = new ImagickDraw();
                     $draw->setFillColor('black');
@@ -396,25 +396,39 @@ class DpeGenerator
                     $draw->setFillColor('black');
                     $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Regular.otf');
                     $draw->setFontSize($fontText);
-                    $image->annotateimage($draw, $x_ges_text, 85, 0, self::KG_CO2_M2);
+                    $image->annotateimage($draw, $x_ges_text, 90, 0, self::KG_CO2_M2);
 
                     $draw = new ImagickDraw();
                     $draw->setFillColor('black');
-                    $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Regular.otf');
+                    $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
                     $draw->setFontSize($fontText);
-                    $image->annotateimage($draw, $x_ges_text + 10, $dpeConf->text + 40, 0, "émissions");
+                    $image->annotateimage($draw, $x_ges_text + 10, $dpeConf->text + 30, 0, "émissions");
 
                     $draw = new ImagickDraw();
                     $draw->setFillColor('black');
-                    $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Regular.otf');
+                    $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
                     $draw->setFontSize($fontText);
-                    $image->annotateimage($draw, $x_dpe_text - 10, $dpeConf->text + 40, 0, "consommation");
+                    $image->annotateimage($draw, $x_dpe_text - 10, $dpeConf->text + 30, 0, "consommation");
 
                     $draw = new ImagickDraw();
-                    $draw->setFillColor('grey');
-                    $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Regular.otf');
+                    $draw->setFillColor('black');
+                    $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
                     $draw->setFontSize($fontText);
-                    $image->annotateimage($draw, $x_dpe_text - 17, $dpeConf->text + 55, 0, "(énergie primaire)");
+                    $image->annotateimage($draw, $x_dpe_text - 17, $dpeConf->text + 45, 0, "(énergie primaire)");
+
+                    if ($this->getValFinalConsumption() && $this->getValFinalConsumption() > 0) {
+                        $draw = new ImagickDraw();
+                        $draw->setFillColor('black');
+                        $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
+                        $draw->setFontSize($fontText);
+                        $image->annotateimage($draw, $x_dpe_text - 13, $dpeConf->text + 62, 0, $this->getValFinalConsumption() . " kWh/m2/an");
+
+                        $draw = new ImagickDraw();
+                        $draw->setFillColor('black');
+                        $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
+                        $draw->setFontSize($fontText);
+                        $image->annotateimage($draw, $x_dpe_text - 15, $dpeConf->text + 74, 0, "d'énergie finale");
+                    }
                 } else {
                     $draw = new ImagickDraw();
                     $draw->setFillColor('black');
@@ -443,61 +457,92 @@ class DpeGenerator
 
                     $draw = new ImagickDraw();
                     $draw->setFillColor('black');
-                    $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Regular.otf');
+                    $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
                     $draw->setFontSize($fontText);
-                    $image->annotateimage($draw, $x_ges_text + 10, $dpeConf->text - 70, 0, "émissions");
+                    $image->annotateimage($draw, $x_ges_text + 7, $dpeConf->text - 76, 0, "émissions");
+
+                    $draw = new ImagickDraw();
+                    $draw->setFillColor('black');
+                    $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
+                    $draw->setFontSize($fontText);
+                    $image->annotateimage($draw, $x_dpe_text - 12, $dpeConf->text - 91, 0, "consommation");
 
                     $draw = new ImagickDraw();
                     $draw->setFillColor('black');
                     $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Regular.otf');
                     $draw->setFontSize($fontText);
-                    $image->annotateimage($draw, $x_dpe_text - 10, $dpeConf->text - 85, 0, "consommation");
-
-                    $draw = new ImagickDraw();
-                    $draw->setFillColor('grey');
-                    $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Regular.otf');
-                    $draw->setFontSize($fontText);
-                    $image->annotateimage($draw, $x_dpe_text - 17, $dpeConf->text - 70, 0, "(énergie primaire)");
+                    $image->annotateimage($draw, $x_dpe_text - 17, $dpeConf->text - 76, 0, "(énergie primaire)");
                 }
 
 
-                if ($this->getValFinalConsumption() && $this->getValFinalConsumption() > 0) {
+                if ($letterDpe != "A" && $this->getValFinalConsumption() && $this->getValFinalConsumption() > 0) {
                     $draw = new ImagickDraw();
-                    $draw->setFillColor('grey');
-                    $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Regular.otf');
-                    $draw->setFontSize($fontText);
-                    $image->annotateimage($draw, $x_dpe_text - 13, $dpeConf->text + 25, 0, $this->getValFinalConsumption() . " kWh/m2/an");
-
-                    $draw = new ImagickDraw();
-                    $draw->setFillColor('grey');
-                    $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Regular.otf');
-                    $draw->setFontSize($fontText);
-                    $image->annotateimage($draw, $x_dpe_text - 15, $dpeConf->text + 35, 0, "d'énergie finale");
-                }
-
-                //Texte passoire énégertique, pour les lettres de A à E
-                if ($letterDpe != "F" && $letterDpe != "G") {
-                    $draw = new ImagickDraw();
+                    $draw->setFillColor('black');
                     $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
-                    $draw->setFillColor('grey');
-                    $draw->setFontSize(12);
-                    $image->annotateImage($draw, 108, 330, 0,"passoire");
+                    $draw->setFontSize($fontText);
+                    $image->annotateimage($draw, $x_dpe_text - 13, $dpeConf->text + 18, 0, $this->getValFinalConsumption() . " kWh/m2/an");
 
                     $draw = new ImagickDraw();
+                    $draw->setFillColor('black');
                     $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
-                    $draw->setFillColor('grey');
-                    $draw->setFontSize(12);
-                    $image->annotateImage($draw, 90, 345, 0,"énergétique");
+                    $draw->setFontSize($fontText);
+                    $image->annotateimage($draw, $x_dpe_text - 15, $dpeConf->text + 30, 0, "d'énergie finale");
                 }
 
+                //Texte passoire énégertique
+                switch($letterDpe){
+                    case "A":
+                    case "B":
+                    case "C":
+                    case "D":
+                    case "E":
+                        $draw = new ImagickDraw();
+                        $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
+                        $draw->setFillColor('black');
+                        $draw->setFontSize(12);
+                        $image->annotateImage($draw, 108, 330, 0,"passoire");
+
+                        $draw = new ImagickDraw();
+                        $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
+                        $draw->setFillColor('black');
+                        $draw->setFontSize(12);
+                        $image->annotateImage($draw, 90, 345, 0,"énergétique");
+                        break;
+                    case "F":
+                        $draw = new ImagickDraw();
+                        $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
+                        $draw->setFillColor('#D7221F');
+                        $draw->setFontSize(14);
+                        $image->annotateImage($draw, 435, 110, 0,"passoire");
+
+                        $draw = new ImagickDraw();
+                        $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
+                        $draw->setFillColor('#D7221F');
+                        $draw->setFontSize(14);
+                        $image->annotateImage($draw, 425, 125, 0,"énergétique");
+                        break;
+                    case "G" :
+                        $draw = new ImagickDraw();
+                        $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
+                        $draw->setFillColor('#D7221F');
+                        $draw->setFontSize(14);
+                        $image->annotateImage($draw, 455, 110, 0,"passoire");
+
+                        $draw = new ImagickDraw();
+                        $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
+                        $draw->setFillColor('#D7221F');
+                        $draw->setFontSize(14);
+                        $image->annotateImage($draw, 445, 125, 0,"énergétique");
+                        break;
+                }
 
                 //Bottom text
                 $draw = new ImagickDraw();
-                $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSans-Medium.otf');
+                $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSans-Bold.otf');
                 $draw->setFillColor('#D7221F');
-                $draw->setFontSize(12);
-                $draw->setFontWeight(200);
-                $image->annotateImage($draw, 172, 395, 0,'logement extrêmement peu performant');
+                $draw->setFontSize(20);
+                $draw->setFontWeight(400);
+                $image->annotateImage($draw, 172, 397, 0,'logement extrêmement peu performant');
 
                 $image->setImageFormat('png');
                 $image->setImageAlphaChannel(Imagick::ALPHACHANNEL_REMOVE);
