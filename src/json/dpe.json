@@ -84,38 +84,38 @@
     "dpe": {
       "A": {
         "img": "base_dpe_web_a.png",
-        "val": 60,
-        "text": 80
+        "val": 65,
+        "text": 85
       },
       "B": {
         "img": "base_dpe_web_b.png",
-        "val": 110,
-        "text": 130
+        "val": 117,
+        "text": 140
       },
       "C": {
         "img": "base_dpe_web_c.png",
-        "val": 160,
-        "text": 180
+        "val": 165,
+        "text": 188
       },
       "D": {
         "img": "base_dpe_web_d.png",
-        "val": 205,
-        "text": 225
+        "val": 210,
+        "text": 234
       },
       "E": {
         "img": "base_dpe_web_e.png",
-        "val": 250,
-        "text": 270
+        "val": 255,
+        "text": 279
       },
       "F": {
         "img": "base_dpe_web_f.png",
-        "val": 300,
-        "text": 320
+        "val": 305,
+        "text": 324
       },
       "G": {
         "img": "base_dpe_web_g.png",
-        "val": 345,
-        "text": 365
+        "val": 350,
+        "text": 370
       }
     },
     "ges": {
