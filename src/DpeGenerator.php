@@ -86,9 +86,9 @@ class DpeGenerator
 
     /**
      * valeur de la superficie
-     *  @var int
+     *  @var float|null
      */
-    private $superficie;
+    private ?float $superficie;
 
 
     private $size = self::PRINT_SIZE_TYPE;
@@ -355,17 +355,17 @@ class DpeGenerator
     }
 
     /**
-     * @param int $superficie
+     * @param float|null $superficie
      */
-    public function setSuperficie(int $superficie): void
+    public function setSuperficie(?float $superficie): void
     {
         $this->superficie = $superficie;
     }
 
     /**
-     * @return int
+     * @return float|null
      */
-    public function getSuperficie(): int
+    public function getSuperficie(): ?float
     {
         return $this->superficie;
     }
@@ -843,22 +843,24 @@ HTML;
      */
     private function getLetterDPEGSmallSurface(): ?string
     {
-        $superficie = $this->superficie;
+        $superficieInt = $this->getSuperficie() < 8 ? 8 : (int)floor($this->getSuperficie());
         $dpeCons = $this->getDpeVal();
         $gesCons = $this->getGesVal();
-
         $smallSurfaceObj = $this->jsonSmallSurface->standard;
 
-        if (property_exists($smallSurfaceObj, $superficie)) {
-            $referenciel = $smallSurfaceObj->$superficie;
-
-            if ($this->isDpeAltitude) {
-                $altitudeObj = $this->jsonSmallSurface->altitude->$superficie;
-
-                $referenciel->CEP_e = $altitudeObj->CEP_e;
-                $referenciel->EGES_e = $altitudeObj->EGES_e;
-                $referenciel->CEP_f = $altitudeObj->CEP_f;
-                $referenciel->EGES_f = $altitudeObj->EGES_f;
+        if (property_exists($smallSurfaceObj,$superficieInt)) {
+            //superficie entiere ou égale à 40 => pas d'interpolation
+            if ($superficieInt === 40 || (floor($this->getSuperficie()) === $this->getSuperficie())) {
+                $referenciel = $smallSurfaceObj->{$superficieInt};
+                if ($this->isDpeAltitude) {
+                    $altitudeObj = $this->jsonSmallSurface->altitude->{$superficieInt};
+                    $referenciel->CEP_e = $altitudeObj->CEP_e;
+                    $referenciel->EGES_e = $altitudeObj->EGES_e;
+                    $referenciel->CEP_f = $altitudeObj->CEP_f;
+                    $referenciel->EGES_f = $altitudeObj->EGES_f;
+                }
+            } else {
+                $referenciel = $this->getReferentielByInterpolation($this->getSuperficie());
             }
 
             if ($dpeCons < $referenciel->CEP_a && $gesCons < $referenciel->EGES_a) {
@@ -908,19 +910,20 @@ HTML;
     private function getNewLetterGESSmallSurface(): string
     {
         $ges = $this->getGesVal();
-        $isAltitude = $this->isDpeAltitude;
-        $superficie = $this->superficie;
-
+        $superficieInt = $this->getSuperficie() < 8 ? 8 : (int)floor($this->getSuperficie());
         $smallSurfaceObj = $this->jsonSmallSurface->standard;
 
-        if (property_exists($smallSurfaceObj, $superficie)) {
-            $referenciel = $smallSurfaceObj->$superficie;
-
-            if ($this->isDpeAltitude) {
-                $altitudeObj = $this->jsonSmallSurface->altitude->$superficie;
-
-                $referenciel->EGES_e = $altitudeObj->EGES_e;
-                $referenciel->EGES_f = $altitudeObj->EGES_f;
+        if (property_exists($smallSurfaceObj, $superficieInt)) {
+            //superficie entiere ou égale à 40 => pas d'interpolation
+            if ($superficieInt === 40 || (floor($this->getSuperficie()) === $this->getSuperficie())) {
+                $referenciel = $smallSurfaceObj->{$superficieInt};
+                if ($this->isDpeAltitude) {
+                    $altitudeObj = $this->jsonSmallSurface->altitude->{$superficieInt};
+                    $referenciel->EGES_e = $altitudeObj->EGES_e;
+                    $referenciel->EGES_f = $altitudeObj->EGES_f;
+                }
+            } else {
+                $referenciel = $this->getReferentielByInterpolation($this->getSuperficie());
             }
 
             if ($ges < $referenciel->EGES_a) {
@@ -953,17 +956,20 @@ HTML;
     private function getNewLetterDPESmallSurface(): string
     {
         $dpe = $this->getDpeVal();
-        $superficie = $this->superficie;
+        $superficieInt = $this->getSuperficie() < 8 ? 8 : (int)floor($this->getSuperficie());
         $smallSurfaceObj = $this->jsonSmallSurface->standard;
 
-        if (property_exists($smallSurfaceObj, $superficie)) {
-            $referenciel = $smallSurfaceObj->$superficie;
-
-            if ($this->isDpeAltitude) {
-                $altitudeObj = $this->jsonSmallSurface->altitude->$superficie;
-
-                $referenciel->CEP_e = $altitudeObj->CEP_e;
-                $referenciel->CEP_f = $altitudeObj->CEP_f;
+        if (property_exists($smallSurfaceObj, $superficieInt)) {
+            //superficie entiere ou égale à 40 => pas d'interpolation
+            if ($superficieInt === 40 || (floor($this->getSuperficie()) === $this->getSuperficie())) {
+                $referenciel = $smallSurfaceObj->{$superficieInt};
+                if ($this->isDpeAltitude) {
+                    $altitudeObj = $this->jsonSmallSurface->altitude->{$superficieInt};
+                    $referenciel->CEP_e = $altitudeObj->CEP_e;
+                    $referenciel->CEP_f = $altitudeObj->CEP_f;
+                }
+            } else {
+                $referenciel = $this->getReferentielByInterpolation($this->getSuperficie());
             }
 
             if ($dpe < $referenciel->CEP_a) {
@@ -987,6 +993,39 @@ HTML;
             return 'G';
         }
         return "";
+    }
+
+    /**
+     * calcul un nouveau référentiel par interpolation linéraire
+     * @param float|null $superficie
+     * @return object
+     */
+    private function getReferentielByInterpolation(?float $superficie): object
+    {
+        $lowValue = (int)floor($superficie);
+        $highValue = (int)ceil($superficie);
+        $lowReferentiel = $this->jsonSmallSurface->standard->{$lowValue};
+        $highReferentiel = $this->jsonSmallSurface->standard->{$highValue};
+        if ($this->isDpeAltitude) {
+            $lowReferentiel->CEP_e = $this->jsonSmallSurface->altitude->{$lowValue}->CEP_e;
+            $lowReferentiel->EGES_e = $this->jsonSmallSurface->altitude->{$lowValue}->EGES_e;
+            $lowReferentiel->CEP_f = $this->jsonSmallSurface->altitude->{$lowValue}->CEP_f;
+            $lowReferentiel->EGES_f = $this->jsonSmallSurface->altitude->{$lowValue}->EGES_f;
+
+            $highReferentiel->CEP_e = $this->jsonSmallSurface->altitude->{$highValue}->CEP_e;
+            $highReferentiel->EGES_e = $this->jsonSmallSurface->altitude->{$highValue}->EGES_e;
+            $highReferentiel->CEP_f = $this->jsonSmallSurface->altitude->{$highValue}->CEP_f;
+            $highReferentiel->EGES_f = $this->jsonSmallSurface->altitude->{$highValue}->EGES_f;
+        }
+        $newReferentiel = new \stdClass();
+        $referentielKeys = ['CEP_a', 'EGES_a', 'CEP_b', 'EGES_b', 'CEP_c', 'EGES_c', 'CEP_d', 'EGES_d', 'CEP_e', 'EGES_e', 'CEP_f', 'EGES_f'];
+        foreach ($referentielKeys as $key) {
+            $lowReferentielCeiling = $lowReferentiel->{$key};
+            $highReferentielCeiling = $highReferentiel->{$key};
+            $newReferentiel->{$key} = $lowReferentielCeiling + ($highReferentielCeiling - $lowReferentielCeiling) * (($superficie - $lowValue) / ($highValue - $lowValue));
+        }
+
+        return $newReferentiel;
     }
     #endregion
 }

@@ -32,7 +32,7 @@ Available on https://packagist.org/packages/lbigroupp/dpegenerator
 ```
 
 ```php 
-(int) setSuperficie 
+(?float) setSuperficie 
 ```
 
 ### List of available constants
@@ -54,7 +54,7 @@ $type = \LBIGroupDpeGenerator\DpeGenerator::DPE_TYPE;
 // OR $type = \LBIGroupDpeGenerator\DpeGenerator::GES_TYPE
 $dpeVal = 29;
 $gesVal = 2;
-$superficie = 35;
+$superficie = 35.3;
 $imgTarget = "YOUR_TARGET";
 $pictureName = "YOUR_PICTURE_NAME";
 
@@ -65,7 +65,7 @@ if (file_exists($imgTarget . $pictureName . '.png')) {
 $dpe = new \LBIGroupDpeGenerator\DpeGenerator();
 $dpe->setDpeVal($dpeVal);
 $dpe->setGesVal($gesVal);
-$dpe->setSupericie($superficie);
+$dpe->setSuperficie($superficie);
 $dpe->setPictureType($type);
 $dpe->setPathToWriteImage($imgTarget);
 $dpe->setNameOfPicture($pictureName);
@@ -82,12 +82,12 @@ $type = \LBIGroupDpeGenerator\DpeGenerator::DPE_TYPE;
 // OR $type = \LBIGroupDpeGenerator\DpeGenerator::GES_TYPE
 $dpeVal = 29;
 $gesVal = 2;
-$superficie = 35;
+$superficie = 35.3;
 
 $dpe = new \LBIGroupDpeGenerator\DpeGenerator();
 $dpe->setDpeVal($dpeVal);
 $dpe->setGesVal($gesVal);
-$dpe->setSupericie($superficie);
+$dpe->setSuperficie($superficie);
 $dpe->setPictureType($type);
 
 // return file location
