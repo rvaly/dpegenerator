@@ -31,6 +31,10 @@ Available on https://packagist.org/packages/lbigroupp/dpegenerator
 (int) setGesVal 
 ```
 
+```php 
+(?float) setSuperficie 
+```
+
 ### List of available constants
 
 It's constants allow you to define the type of image you want DPE or GES.
@@ -50,6 +54,7 @@ $type = \LBIGroupDpeGenerator\DpeGenerator::DPE_TYPE;
 // OR $type = \LBIGroupDpeGenerator\DpeGenerator::GES_TYPE
 $dpeVal = 29;
 $gesVal = 2;
+$superficie = 35.3;
 $imgTarget = "YOUR_TARGET";
 $pictureName = "YOUR_PICTURE_NAME";
 
@@ -60,6 +65,7 @@ if (file_exists($imgTarget . $pictureName . '.png')) {
 $dpe = new \LBIGroupDpeGenerator\DpeGenerator();
 $dpe->setDpeVal($dpeVal);
 $dpe->setGesVal($gesVal);
+$dpe->setSuperficie($superficie);
 $dpe->setPictureType($type);
 $dpe->setPathToWriteImage($imgTarget);
 $dpe->setNameOfPicture($pictureName);
@@ -76,10 +82,12 @@ $type = \LBIGroupDpeGenerator\DpeGenerator::DPE_TYPE;
 // OR $type = \LBIGroupDpeGenerator\DpeGenerator::GES_TYPE
 $dpeVal = 29;
 $gesVal = 2;
+$superficie = 35.3;
 
 $dpe = new \LBIGroupDpeGenerator\DpeGenerator();
 $dpe->setDpeVal($dpeVal);
 $dpe->setGesVal($gesVal);
+$dpe->setSuperficie($superficie);
 $dpe->setPictureType($type);
 
 // return file location
@@ -97,3 +105,6 @@ echo $dpe->generatePicture();
 ``2.1`` : addition DPEG for Guadeloupe via iso code GP;
 
 ``2.3`` : addition Final consuption and PHP =>7.4;
+
+``2.4`` : updated to fit new legislation for small surfaces (July 2024)
+
