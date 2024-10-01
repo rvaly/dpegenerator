@@ -84,82 +84,82 @@
     "dpe": {
       "A": {
         "img": "base_dpe_web_a.png",
-        "val": 60,
-        "text": 80
+        "val": 65,
+        "text": 85
       },
       "B": {
         "img": "base_dpe_web_b.png",
-        "val": 110,
-        "text": 130
+        "val": 117,
+        "text": 140
       },
       "C": {
         "img": "base_dpe_web_c.png",
-        "val": 160,
-        "text": 180
+        "val": 165,
+        "text": 188
       },
       "D": {
         "img": "base_dpe_web_d.png",
         "val": 210,
-        "text": 230
+        "text": 234
       },
       "E": {
         "img": "base_dpe_web_e.png",
-        "val": 260,
-        "text": 280
+        "val": 255,
+        "text": 279
       },
       "F": {
         "img": "base_dpe_web_f.png",
-        "val": 310,
-        "text": 330
+        "val": 305,
+        "text": 324
       },
       "G": {
         "img": "base_dpe_web_g.png",
-        "val": 360,
-        "text": 380
+        "val": 350,
+        "text": 370
       }
     },
     "ges": {
       "A": {
         "img": "base_ges_web_a.png",
-        "ges_val": 220,
-        "ges_text": 260,
-        "x_val": 70
+        "ges_val": 205,
+        "ges_text": 245,
+        "x_val": 85
       },
       "B": {
         "img": "base_ges_web_b.png",
-        "ges_val": 250,
-        "ges_text": 320,
-        "x_val": 120
+        "ges_val": 230,
+        "ges_text": 300,
+        "x_val": 125
       },
       "C": {
         "img": "base_ges_web_c.png",
-        "ges_val": 290,
-        "ges_text": 360,
-        "x_val": 170
+        "ges_val": 260,
+        "ges_text": 330,
+        "x_val": 175
       },
       "D": {
         "img": "base_ges_web_d.png",
-        "ges_val": 330,
-        "ges_text": 400,
-        "x_val": 220
+        "ges_val": 300,
+        "ges_text": 370,
+        "x_val": 225
       },
       "E": {
         "img": "base_ges_web_e.png",
-        "ges_val": 370,
-        "ges_text": 440,
+        "ges_val": 340,
+        "ges_text": 410,
         "x_val": 270
       },
       "F": {
         "img": "base_ges_web_f.png",
-        "ges_val": 370,
-        "ges_text": 440,
-        "x_val": 320
+        "ges_val": 340,
+        "ges_text": 410,
+        "x_val": 315
       },
       "G": {
         "img": "base_ges_web_g.png",
-        "ges_val": 370,
-        "ges_text": 475,
-        "x_val": 370
+        "ges_val": 340,
+        "ges_text": 445,
+        "x_val": 360
       }
     }
   }

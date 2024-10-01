@@ -24,6 +24,10 @@ Available on https://packagist.org/packages/lbigroupp/dpegenerator
 ```
 
 ```php 
+(string) setPictureSize 
+```
+
+```php 
 (int) setDpeVal 
 ```
 
@@ -33,6 +37,10 @@ Available on https://packagist.org/packages/lbigroupp/dpegenerator
 
 ```php 
 (?float) setSuperficie 
+```
+
+```php 
+(int) setValFinalConsumption 
 ```
 
 ### List of available constants
@@ -57,6 +65,8 @@ $gesVal = 2;
 $superficie = 35.3;
 $imgTarget = "YOUR_TARGET";
 $pictureName = "YOUR_PICTURE_NAME";
+$valFinalConsumption = 230;
+$imageSize = 'web';
 
 if (file_exists($imgTarget . $pictureName . '.png')) {
     return $imgTarget . $pictureName . '.png';
@@ -69,6 +79,8 @@ $dpe->setSuperficie($superficie);
 $dpe->setPictureType($type);
 $dpe->setPathToWriteImage($imgTarget);
 $dpe->setNameOfPicture($pictureName);
+$dpe->setImageSize($imageSize);
+$dpe->setValFinalConsumption($valFinalConsumption);
 $dpe->setGenerateImage(true);
 
 // return file location
@@ -83,12 +95,16 @@ $type = \LBIGroupDpeGenerator\DpeGenerator::DPE_TYPE;
 $dpeVal = 29;
 $gesVal = 2;
 $superficie = 35.3;
+$valFinalConsumption = 230;
+$imageSize = 'web';
 
 $dpe = new \LBIGroupDpeGenerator\DpeGenerator();
 $dpe->setDpeVal($dpeVal);
 $dpe->setGesVal($gesVal);
 $dpe->setSuperficie($superficie);
 $dpe->setPictureType($type);
+$dpe->setImageSize($imageSize);
+$dpe->setValFinalConsumption($valFinalConsumption);
 
 // return file location
 echo $dpe->generatePicture();
