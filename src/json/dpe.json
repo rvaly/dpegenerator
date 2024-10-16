@@ -3,119 +3,133 @@
     "A": {
       "img": "base_new_dpe_a.png",
       "val": 200,
-      "text": 250
+      "text": 243,
+      "textModifier": 65
     },
     "B": {
       "img": "base_new_dpe_b.png",
-      "val": 300,
-      "text": 350
+      "val": 315,
+      "text": 355,
+      "textModifier": 66
     },
     "C": {
       "img": "base_new_dpe_c.png",
-      "val": 410,
-      "text": 460
+      "val": 430,
+      "text": 470,
+      "textModifier": 67
     },
     "D": {
       "img": "base_new_dpe_d.png",
-      "val": 525,
-      "text": 575
+      "val": 535,
+      "text": 575,
+      "textModifier": 66
     },
     "E": {
       "img": "base_new_dpe_e.png",
-      "val": 640,
-      "text": 690
+      "val": 650,
+      "text": 690,
+      "textModifier": 66
     },
     "F": {
       "img": "base_new_dpe_f.png",
-      "val": 750,
-      "text": 805
+      "val": 760,
+      "text": 805,
+      "textModifier": 69
     },
     "G": {
       "img": "base_new_dpe_g.png",
-      "val": 860,
-      "text": 915
+      "val": 870,
+      "text": 915,
+      "textModifier": 69
     }
   },
   "ges": {
     "A": {
       "img": "base_new_ges_a.png",
-      "ges_val": 320,
-      "ges_text": 390,
-      "x_val": 360
+      "ges_val": 300,
+      "ges_text": 350,
+      "y_val": 275
     },
     "B": {
       "img": "base_new_ges_b.png",
-      "ges_val": 360,
-      "ges_text": 430,
-      "x_val": 420
+      "ges_val": 330,
+      "ges_text": 380,
+      "y_val": 325
     },
     "C": {
       "img": "base_new_ges_c.png",
-      "ges_val": 400,
-      "ges_text": 490,
-      "x_val": 470
+      "ges_val": 360,
+      "ges_text": 435,
+      "y_val": 375
     },
     "D": {
       "img": "base_new_ges_d.png",
-      "ges_val": 430,
-      "ges_text": 520,
-      "x_val": 520
+      "ges_val": 390,
+      "ges_text": 465,
+      "y_val": 430
     },
     "E": {
       "img": "base_new_ges_e.png",
-      "ges_val": 470,
-      "ges_text": 560,
-      "x_val": 570
+      "ges_val": 430,
+      "ges_text": 505,
+      "y_val": 475
     },
     "F": {
       "img": "base_new_ges_f.png",
-      "ges_val": 480,
-      "ges_text": 580,
-      "x_val": 620
+      "ges_val": 435,
+      "ges_text": 505,
+      "y_val": 528
     },
     "G": {
       "img": "base_new_ges_g.png",
-      "ges_val": 460,
-      "ges_text": 580,
-      "x_val": 670
+      "ges_val": 415,
+      "ges_text": 515,
+      "y_val": 580
     }
   },
   "web": {
     "dpe": {
       "A": {
         "img": "base_dpe_web_a.png",
-        "val": 65,
-        "text": 85
+        "val": 70,
+        "text": 90,
+        "textModifier": 28
       },
       "B": {
         "img": "base_dpe_web_b.png",
-        "val": 117,
-        "text": 140
+        "val": 118,
+        "text": 135,
+        "textModifier": 28
       },
       "C": {
         "img": "base_dpe_web_c.png",
         "val": 165,
-        "text": 188
+        "text": 184,
+        "textModifier": 30
       },
       "D": {
         "img": "base_dpe_web_d.png",
         "val": 210,
-        "text": 234
+        "text": 230,
+        "textModifier": 30
       },
       "E": {
         "img": "base_dpe_web_e.png",
-        "val": 255,
-        "text": 279
+        "val": 258,
+        "text": 276,
+        "textModifier": 31
       },
       "F": {
         "img": "base_dpe_web_f.png",
         "val": 305,
-        "text": 324
+        "text": 324,
+        "textModifier": 30
       },
       "G": {
         "img": "base_dpe_web_g.png",
         "val": 350,
-        "text": 370
+        "text": 370,
+        "textModifier": 30
       }
     },
     "ges": {
@@ -123,43 +137,43 @@
         "img": "base_ges_web_a.png",
         "ges_val": 205,
         "ges_text": 245,
-        "x_val": 85
+        "y_val": 85
       },
       "B": {
         "img": "base_ges_web_b.png",
-        "ges_val": 230,
-        "ges_text": 300,
-        "x_val": 125
+        "ges_val": 235,
+        "ges_text": 285,
+        "y_val": 130
       },
       "C": {
         "img": "base_ges_web_c.png",
         "ges_val": 260,
         "ges_text": 330,
-        "x_val": 175
+        "y_val": 175
       },
       "D": {
         "img": "base_ges_web_d.png",
         "ges_val": 300,
         "ges_text": 370,
-        "x_val": 225
+        "y_val": 225
       },
       "E": {
         "img": "base_ges_web_e.png",
         "ges_val": 340,
         "ges_text": 410,
-        "x_val": 270
+        "y_val": 270
       },
       "F": {
         "img": "base_ges_web_f.png",
         "ges_val": 340,
         "ges_text": 410,
-        "x_val": 315
+        "y_val": 315
       },
       "G": {
         "img": "base_ges_web_g.png",
         "ges_val": 340,
         "ges_text": 445,
-        "x_val": 360
+        "y_val": 360
       }
     }
   }
