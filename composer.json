@@ -10,7 +10,9 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "ext-imagick": "*"
+    "ext-json": "*",
+    "ext-imagick": "*",
+    "php": "^7.4"
   },
   "autoload": {
     "psr-4": {
