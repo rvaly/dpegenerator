@@ -87,7 +87,7 @@ $superficie = 35;
 $dpe = new \LBIGroupDpeGenerator\DpeGenerator();
 $dpe->setDpeVal($dpeVal);
 $dpe->setGesVal($gesVal);
-$dpe->setSuoerficie($superficie);
+$dpe->setSuperficie($superficie);
 $dpe->setPictureType($type);
 
 // return file location
