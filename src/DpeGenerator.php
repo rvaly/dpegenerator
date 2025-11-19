@@ -763,49 +763,61 @@ class DpeGenerator
      */
     public function getNewLetterDPEG(): ?string
     {
-        $dpe_cons = $this->getDpeVal();
-        $dpe_ges = $this->getGesVal();
+        $dpeCons = $this->getDpeVal();
+        $gesCons = $this->getGesVal();
         $isDpeAltitude = $this->getIsDpeAltitude();
-        $superficie = $this->getSuperficie();
 
-        if ($superficie && $superficie <= 40) {
+        if ($this->getSuperficie() && $this->getSuperficie() <= 40) {
             return $this->getLetterDPEGSmallSurface();
         }
 
-        if ($dpe_cons < 70 && $dpe_ges < 6) {
-            return 'A';
-        }
-        if ($dpe_cons < 110 && $dpe_ges < 11) {
-            return 'B';
-        }
-        if ($dpe_cons < 180 && $dpe_ges < 30) {
-            return 'C';
-        }
-        if ($dpe_cons < 250 && $dpe_ges < 55) {
-            return 'D';
-        }
+        //Surface bigger than 40m2
+        $referenciel = $this->jsonSmallSurface->biggerSurface;
         if ($isDpeAltitude) {
-            if ($dpe_cons < 390 && $dpe_ges < 80) {
-                return 'E';
-            }
-            if ($dpe_cons < 500 && $dpe_ges < 110) {
-                return 'F';
-            }
-            if ($dpe_cons >= 500 || $dpe_ges >= 110) {
-                return 'G';
-            }
-        }
-        if ($dpe_cons < 330 && $dpe_ges < 70) {
-            return 'E';
-        }
-        if ($dpe_cons < 420 && $dpe_ges < 100) {
-            return 'F';
-        }
-        if ($dpe_cons >= 420 || $dpe_ges >= 100) {
-            return 'G';
+            $altitudeObj = $this->jsonSmallSurface->biggerSurfaceAltitude;
+
+            $referenciel->CEP_e = $altitudeObj->CEP_e;
+            $referenciel->EGES_e = $altitudeObj->EGES_e;
+            $referenciel->CEP_f = $altitudeObj->CEP_f;
+            $referenciel->EGES_f = $altitudeObj->EGES_f;
         }
 
-        return null;
+        if ($dpeCons < $referenciel->CEP_a && $gesCons < $referenciel->EGES_a) {
+            return "A";
+        }
+
+        $conditions = [
+            "B" => [
+                [$dpeCons >= $referenciel->CEP_a, $dpeCons < $referenciel->CEP_b, $gesCons < $referenciel->EGES_b],
+                [$gesCons >= $referenciel->EGES_a, $gesCons < $referenciel->EGES_b, $dpeCons < $referenciel->CEP_b],
+            ],
+            "C" => [
+                [$dpeCons >= $referenciel->CEP_b, $dpeCons < $referenciel->CEP_c, $gesCons < $referenciel->EGES_c],
+                [$gesCons >= $referenciel->EGES_b, $gesCons < $referenciel->EGES_c, $dpeCons < $referenciel->CEP_c],
+            ],
+            "D" => [
+                [$dpeCons >= $referenciel->CEP_c, $dpeCons < $referenciel->CEP_d, $gesCons < $referenciel->EGES_d],
+                [$gesCons >= $referenciel->EGES_c, $gesCons < $referenciel->EGES_d, $dpeCons < $referenciel->CEP_d],
+            ],
+            "E" => [
+                [$dpeCons >= $referenciel->CEP_d, $dpeCons < $referenciel->CEP_e, $gesCons < $referenciel->EGES_e],
+                [$gesCons >= $referenciel->EGES_d, $gesCons < $referenciel->EGES_e, $dpeCons < $referenciel->CEP_e],
+            ],
+            "F" => [
+                [$dpeCons >= $referenciel->CEP_e, $dpeCons < $referenciel->CEP_f, $gesCons < $referenciel->EGES_f],
+                [$gesCons >= $referenciel->EGES_e, $gesCons < $referenciel->EGES_f, $dpeCons < $referenciel->CEP_f],
+            ]
+        ];
+
+        foreach ($conditions as $letter => $conds) {
+            foreach ($conds as $cond) {
+                if ($cond[0] && $cond[1] && $cond[2]) {
+                    return $letter;
+                }
+            }
+        }
+
+        return "G";
     }
 
     /**
@@ -1102,19 +1114,19 @@ HTML;
             if ($ges < $referenciel->EGES_a) {
                 return 'A';
             }
-            if ($ges <= $referenciel->EGES_b) {
+            if ($ges < $referenciel->EGES_b) {
                 return 'B';
             }
-            if ($ges <= $referenciel->EGES_c) {
+            if ($ges < $referenciel->EGES_c) {
                 return 'C';
             }
-            if ($ges <= $referenciel->EGES_d) {
+            if ($ges < $referenciel->EGES_d) {
                 return 'D';
             }
-            if ($ges <= $referenciel->EGES_e) {
+            if ($ges < $referenciel->EGES_e) {
                 return 'E';
             }
-            if ($ges <= $referenciel->EGES_f) {
+            if ($ges < $referenciel->EGES_f) {
                 return 'F';
             }
 
@@ -1148,19 +1160,19 @@ HTML;
             if ($dpe < $referenciel->CEP_a) {
                 return 'A';
             }
-            if ($dpe <= $referenciel->CEP_b) {
+            if ($dpe < $referenciel->CEP_b) {
                 return 'B';
             }
-            if ($dpe <= $referenciel->CEP_c) {
+            if ($dpe < $referenciel->CEP_c) {
                 return 'C';
             }
-            if ($dpe <= $referenciel->CEP_d) {
+            if ($dpe < $referenciel->CEP_d) {
                 return 'D';
             }
-            if ($dpe <= $referenciel->CEP_e) {
+            if ($dpe < $referenciel->CEP_e) {
                 return 'E';
             }
-            if ($dpe <= $referenciel->CEP_f) {
+            if ($dpe < $referenciel->CEP_f) {
                 return 'F';
             }
             return 'G';
