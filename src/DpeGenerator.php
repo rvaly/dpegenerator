@@ -797,8 +797,8 @@ class DpeGenerator
         $smallSurfaceObj = $this->jsonSmallSurface->standard;
 
         if (property_exists($smallSurfaceObj,$superficieInt)) {
-            //superficie entiere ou égale à 40 => pas d'interpolation
-            if ($superficieInt === 40 || (floor($this->getSuperficie()) === $this->getSuperficie())) {
+            //superficie entiere ou égale à un extreme => pas d'interpolation
+            if ($superficieInt === 40 || $superficieInt === 8 || (floor($this->getSuperficie()) === $this->getSuperficie())) {
                 $referenciel = $smallSurfaceObj->{$superficieInt};
                 if ($this->isDpeAltitude) {
                     $altitudeObj = $this->jsonSmallSurface->altitude->{$superficieInt};
@@ -862,8 +862,8 @@ class DpeGenerator
         $smallSurfaceObj = $this->jsonSmallSurface->standard;
 
         if (property_exists($smallSurfaceObj, $superficieInt)) {
-            //superficie entiere ou égale à 40 => pas d'interpolation
-            if ($superficieInt === 40 || (floor($this->getSuperficie()) === $this->getSuperficie())) {
+            //superficie entiere ou égale à un extreme => pas d'interpolation
+            if ($superficieInt === 40 || $superficieInt === 8 || (floor($this->getSuperficie()) === $this->getSuperficie())) {
                 $referenciel = $smallSurfaceObj->{$superficieInt};
                 if ($this->isDpeAltitude) {
                     $altitudeObj = $this->jsonSmallSurface->altitude->{$superficieInt};
@@ -908,8 +908,8 @@ class DpeGenerator
         $smallSurfaceObj = $this->jsonSmallSurface->standard;
 
         if (property_exists($smallSurfaceObj, $superficieInt)) {
-            //superficie entiere ou égale à 40 => pas d'interpolation
-            if ($superficieInt === 40 || (floor($this->getSuperficie()) === $this->getSuperficie())) {
+            //superficie entiere ou égale à un extreme => pas d'interpolation
+            if ($superficieInt === 40 || $superficieInt === 8 || (floor($this->getSuperficie()) === $this->getSuperficie())) {
                 $referenciel = $smallSurfaceObj->{$superficieInt};
                 if ($this->isDpeAltitude) {
                     $altitudeObj = $this->jsonSmallSurface->altitude->{$superficieInt};
