@@ -698,6 +698,10 @@ class DpeGenerator
 
     public function getNewLetterDPE(): ?string
     {
+        if ($this->isoCode === 'GP') {
+            return $this->getLetterDPEGGP();
+        }
+
         $dpe_cons = $this->getDpeVal();
         $superficie = $this->getSuperficie();
         $isDpeAltitude = $this->getIsDpeAltitude();
