@@ -1011,6 +1011,7 @@ class DpeGenerator
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
                 $draw->setStrokeWidth(0);
                 $draw->setFontSize(25);
+                $tirets = '';
                 $nombreTirets = $this->json->dpe->{$letterDPEG}->nombreTirets;
                 for ($i = 0; $i < $nombreTirets; ++$i) {
                     $tirets .= '-';
