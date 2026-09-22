@@ -105,3 +105,5 @@ echo $dpe->generatePicture();
 ``2.1`` : addition DPEG for Guadeloupe via iso code GP;
 
 ``2.3`` : addition Final consuption and PHP =>7.4;
+
+``2.3.1`` : bugfix of the Guadeloupe DPE scale for the edge cases.
