@@ -12,7 +12,10 @@
   "require": {
     "ext-json": "*",
     "ext-imagick": "*",
-    "php": "^7.4"
+    "php": "^7.4 || ^8.0"
+  },
+  "require-dev": {
+    "rector/rector": "^2.7"
   },
   "autoload": {
     "psr-4": {
