@@ -346,9 +346,9 @@ class DpeGenerator
             $dirSource = __DIR__ . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $this->isoCode . DIRECTORY_SEPARATOR;
             $fontValue = 90;
             $fontText = 25;
-            $x_dpe_val = 90 + (20 * (3 - strlen($this->getDpeVal())));
+            $x_dpe_val = 90 + (20 * (3 - strlen((string) $this->getDpeVal())));
             $x_dpe_text = 95;
-            $x_ges_val = 296 + (20 * (3 - strlen($this->getGesVal())));
+            $x_ges_val = 296 + (20 * (3 - strlen((string) $this->getGesVal())));
             $x_ges_text = 296;
 
             if ($this->getImageSize() === self::WEB_SIZE_TYPE && isset($this->json->web)) {
@@ -356,9 +356,9 @@ class DpeGenerator
                 $dirSource = __DIR__ . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $this->isoCode . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR;
                 $fontValue = 50;
                 $fontText = 13;
-                $x_dpe_val = 4 + (12 * (3 - strlen($this->getDpeVal())));
+                $x_dpe_val = 4 + (12 * (3 - strlen((string) $this->getDpeVal())));
                 $x_dpe_text = 18;
-                $x_ges_val = 92 + (12 * (3 - strlen($this->getGesVal())));
+                $x_ges_val = 92 + (12 * (3 - strlen((string) $this->getGesVal())));
                 $x_ges_text = 98;
             }
 
@@ -378,7 +378,7 @@ class DpeGenerator
                     $draw->setFillColor('black');
                     $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
                     $draw->setFontSize($fontValue);
-                    $image->annotateimage($draw, $x_dpe_val, 70, 0, $this->getDpeVal());
+                    $image->annotateimage($draw, $x_dpe_val, 70, 0, (string) $this->getDpeVal());
 
                     $draw = new ImagickDraw();
                     $draw->setFillColor('black');
@@ -390,7 +390,7 @@ class DpeGenerator
                     $draw->setFillColor('black');
                     $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
                     $draw->setFontSize($fontValue);
-                    $image->annotateimage($draw, $x_ges_val, 70, 0, $this->getGesVal());
+                    $image->annotateimage($draw, $x_ges_val, 70, 0, (string) $this->getGesVal());
 
                     $draw = new ImagickDraw();
                     $draw->setFillColor('black');
@@ -434,7 +434,7 @@ class DpeGenerator
                     $draw->setFillColor('black');
                     $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
                     $draw->setFontSize($fontValue);
-                    $image->annotateimage($draw, $x_dpe_val, $dpeConf->val, 0, $this->getDpeVal());
+                    $image->annotateimage($draw, $x_dpe_val, $dpeConf->val, 0, (string) $this->getDpeVal());
 
                     $draw = new ImagickDraw();
                     $draw->setFillColor('black');
@@ -446,7 +446,7 @@ class DpeGenerator
                     $draw->setFillColor('black');
                     $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
                     $draw->setFontSize($fontValue);
-                    $image->annotateimage($draw, $x_ges_val, $dpeConf->val, 0, $this->getGesVal());
+                    $image->annotateimage($draw, $x_ges_val, $dpeConf->val, 0, (string) $this->getGesVal());
 
                     $draw = new ImagickDraw();
                     $draw->setFillColor('black');
@@ -597,7 +597,7 @@ class DpeGenerator
                 $draw->setFillColor('black');
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'IBMPlexSansCondensed-Bold.otf');
                 $draw->setFontSize(60);
-                $image->annotateimage($draw, $gesConf->ges_val, $gesConf->x_val, 0, $this->getGesVal());
+                $image->annotateimage($draw, $gesConf->ges_val, $gesConf->x_val, 0, (string) $this->getGesVal());
 
                 $draw = new ImagickDraw();
                 $draw->setFillColor('black');
@@ -800,7 +800,7 @@ class DpeGenerator
         $gesCons = $this->getGesVal();
         $smallSurfaceObj = $this->jsonSmallSurface->standard;
 
-        if (property_exists($smallSurfaceObj,$superficieInt)) {
+        if (property_exists($smallSurfaceObj,(string) $superficieInt)) {
             //superficie entiere ou égale à un extreme => pas d'interpolation
             if ($superficieInt === 40 || $superficieInt === 8 || (floor($this->getSuperficie()) === $this->getSuperficie())) {
                 $referenciel = $smallSurfaceObj->{$superficieInt};
@@ -865,7 +865,7 @@ class DpeGenerator
         $superficieInt = $this->getSuperficie() < 8 ? 8 : (int)floor($this->getSuperficie());
         $smallSurfaceObj = $this->jsonSmallSurface->standard;
 
-        if (property_exists($smallSurfaceObj, $superficieInt)) {
+        if (property_exists($smallSurfaceObj, (string) $superficieInt)) {
             //superficie entiere ou égale à un extreme => pas d'interpolation
             if ($superficieInt === 40 || $superficieInt === 8 || (floor($this->getSuperficie()) === $this->getSuperficie())) {
                 $referenciel = $smallSurfaceObj->{$superficieInt};
@@ -911,7 +911,7 @@ class DpeGenerator
         $superficieInt = $this->getSuperficie() < 8 ? 8 : (int)floor($this->getSuperficie());
         $smallSurfaceObj = $this->jsonSmallSurface->standard;
 
-        if (property_exists($smallSurfaceObj, $superficieInt)) {
+        if (property_exists($smallSurfaceObj, (string) $superficieInt)) {
             //superficie entiere ou égale à un extreme => pas d'interpolation
             if ($superficieInt === 40 || $superficieInt === 8 || (floor($this->getSuperficie()) === $this->getSuperficie())) {
                 $referenciel = $smallSurfaceObj->{$superficieInt};
@@ -1004,7 +1004,7 @@ class DpeGenerator
                 $draw->setFont(__DIR__ . DIRECTORY_SEPARATOR . 'fonts' . DIRECTORY_SEPARATOR . 'arial.ttf');
                 $draw->setStrokeWidth(1);
                 $draw->setFontSize(40);
-                $image->annotateimage($draw, $this->json->dpe->{$letterDPEG}->value_x, $this->json->dpe->{$letterDPEG}->value_y, 0, $this->getDpeVal());
+                $image->annotateimage($draw, $this->json->dpe->{$letterDPEG}->value_x, $this->json->dpe->{$letterDPEG}->value_y, 0, (string) $this->getDpeVal());
                 $draw = new ImagickDraw();
                 $draw->setStrokeColor('black');
                 $draw->setFillColor('black');
